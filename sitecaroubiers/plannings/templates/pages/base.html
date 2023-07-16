@@ -1,0 +1,11 @@
+<html>
+    <head>
+        {% load static %}
+        <meta charset="UTF-8">
+        <link rel='stylesheet' href="{% static 'css/styles.css' %}">
+        <title>{% block title %}{% endblock %} - Les Caroubiers</title>
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+    </body>
+</html>

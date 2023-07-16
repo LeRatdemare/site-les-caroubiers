@@ -1,0 +1,30 @@
+{% extends 'pages/base.html' %}
+
+{% block title %}Gestion{% endblock %}
+
+{% block body %}
+<h1>Gestion</h1>
+<h2>Familles</h2>
+<table>
+    <tr>
+        <th>Famille</th>
+        <th>Enfant au collège</th>
+        <th>Enfant en primaire</th>
+    </tr>
+    {% for family in families %}
+        <tr>
+            <td>{{family.name}}</td>
+            <td>
+                {% if family.has_child_in_college %}
+                x
+                {% endif %}
+            </td>
+            <td>
+                {% if family.has_child_in_school %}
+                x
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}
