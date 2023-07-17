@@ -5,7 +5,7 @@ class Family(models.Model):
 
     name = models.CharField(max_length=50)
     has_child_in_college = models.BooleanField(default=False)
-    has_child_in_school = models.BooleanField(default=True)
+    has_child_in_school = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.name}"

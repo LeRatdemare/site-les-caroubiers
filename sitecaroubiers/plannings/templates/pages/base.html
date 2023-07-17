@@ -6,6 +6,12 @@
         <title>{% block title %}{% endblock %} - Les Caroubiers</title>
     </head>
     <body>
+        <nav>
+            <ul>
+                <li><a href="{% url 'index' %}">Accueil</a></li>
+                <li><a href="{% url 'gestion' %}">Gestion</a></li>
+            </ul>
+        </nav>
         {% block body %}{% endblock %}
     </body>
 </html>

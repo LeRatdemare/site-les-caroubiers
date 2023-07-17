@@ -1,0 +1,41 @@
+/* ---------------------- ELEMENTS ----------------------*/
+body {
+    background-color: blanchedalmond;
+}
+
+table.families {
+    width: 70%;
+    margin: auto;
+    background-color: #FFFFFF;
+    border-collapse: collapse;
+    border-width: 2px;
+    border-color: #000000;
+    border-style: solid;
+    color: #000000;
+}
+
+table.families td,
+table.families th {
+    border-width: 2px;
+    border-color: #000000;
+    border-style: solid;
+    text-align: center;
+    padding: 6px;
+}
+
+table.families td.check {
+    background-color: green;
+}
+
+table.families td.uncheck {
+    background-color: rgb(235, 53, 53);
+}
+
+table.families thead {
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+/* ---------------------- CLASSES ----------------------*/
+
+/* ---------------------- IDs ----------------------*/
