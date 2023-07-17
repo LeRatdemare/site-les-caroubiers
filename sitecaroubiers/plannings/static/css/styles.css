@@ -38,8 +38,8 @@ table.families thead {
 
 input[type='checkbox'] {
     color: currentColor;
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
     border: 0.15em solid currentColor;
     border-radius: 0.15em;
 }

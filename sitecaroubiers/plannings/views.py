@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
@@ -57,3 +58,39 @@ def gestion_familles(request):
 
 def gestion_plannings(request):
     return render(request, 'pages/gestion_plannings.html')
+
+def get_base_plannings(request):
+    plannings = {
+        'college' : { # Planning du collège
+            'P1': {
+                'datedebut':'2023-09-01',
+                'datefin':'2023-10-28',
+                'semaines' : [ # Période 1
+                    { # Semaine 1
+                        'lundi': { # 1er jour
+                            'matin':["Nathan", "Arnaud"],
+                            'midi':["Véronique"],
+                            'soir':["Céline", "Mic"]
+                        },
+                        'mardi': { # 2ème jour
+                            'matin':["Véronique"],
+                            'midi':["Céline", "Mic"],
+                            'soir':["Nathan", "Arnaud"]
+                        },
+                    },
+                    { # Semaine 2
+                        'lundi': { # 1er jour
+                            'matin':["Nathan", "Arnaud"],
+                            'midi':["Véronique"],
+                            'soir':["Céline", "Mic"]
+                        },
+                    },
+                ]
+            },
+            'P2':{ # Période 2
+                # etc...
+            },
+        },
+        'ecole' : [1,2,5,3] # Planning école
+    }
+    return JsonResponse(plannings)

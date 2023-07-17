@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from plannings.models import Family
 from plannings.forms import FamilyForm
+# from workalendar.europe import France
 
 def create_family(request, create_form):
     # Si le formulaire est valide
@@ -15,3 +16,6 @@ def create_family(request, create_form):
             create_form.save()
         create_form = FamilyForm()
     return message
+
+# france = France()
+# france.add_working_days()
