@@ -5,12 +5,13 @@ from plannings.models import Family
 from django.forms import Form
 from plannings.forms import FamilyForm
 import operator
+from plannings import functions
 
 # Create your views here.
 def index(request):
     return render(request, 'pages/index.html')
 
-def gestion(request):
+def gestion_familles(request):
     families = Family.objects.all()
     message = None
     create_form = FamilyForm()
@@ -36,6 +37,7 @@ def gestion(request):
             # On regarde famille par famille s'il y a des champs modifiés
             for family in families:
                 if not (rslt.get(family.name + '.delete')) is None :
+                    families = families.exclude(id=family.id)
                     family.delete()
                 else :
                     has_child_in_school = not (rslt.get(family.name + '.has_child_in_school') is None)
@@ -50,7 +52,8 @@ def gestion(request):
     # Si méthode GET
     else:
         pass
-    # Pas opti de faire 2 fois la requêtes mais nécessaire pour avoir page à jour
-    families = Family.objects.all()
     families = sorted(families, key=operator.attrgetter('name'))
-    return render(request, 'pages/gestion.html', {'families':families, 'create_form':create_form, 'creation_error_message':message})
+    return render(request, 'pages/gestion_familles.html', {'families':families, 'create_form':create_form, 'creation_error_message':message})
+
+def gestion_plannings(request):
+    return render(request, 'pages/gestion_plannings.html')

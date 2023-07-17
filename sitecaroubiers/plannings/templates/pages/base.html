@@ -9,7 +9,13 @@
         <nav>
             <ul>
                 <li><a href="{% url 'index' %}">Accueil</a></li>
-                <li><a href="{% url 'gestion' %}">Gestion</a></li>
+                <li>
+                    Gestion
+                    <ul>
+                        <li><a href="{% url 'gestion-familles' %}">Familles</a></li>
+                        <li><a href="{% url 'gestion-plannings' %}">Plannings</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
         {% block body %}{% endblock %}

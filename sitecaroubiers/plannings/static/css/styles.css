@@ -36,6 +36,14 @@ table.families thead {
     color: #FFFFFF;
 }
 
+input[type='checkbox'] {
+    color: currentColor;
+    width: 30px;
+    height: 30px;
+    border: 0.15em solid currentColor;
+    border-radius: 0.15em;
+}
+
 /* ---------------------- CLASSES ----------------------*/
 
 .centered {

@@ -21,5 +21,6 @@ from plannings import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
-    path('gestion/', views.gestion, name='gestion'),
+    path('gestion/familles', views.gestion_familles, name='gestion-familles'),
+    path('gestion/plannings', views.gestion_plannings, name='gestion-plannings'),
 ]
