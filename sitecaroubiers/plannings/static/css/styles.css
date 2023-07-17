@@ -4,7 +4,7 @@ body {
 }
 
 table.families {
-    width: 70%;
+    width: 30%;
     margin: auto;
     background-color: #FFFFFF;
     border-collapse: collapse;
@@ -37,5 +37,12 @@ table.families thead {
 }
 
 /* ---------------------- CLASSES ----------------------*/
+
+.centered {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 10px;
+}
 
 /* ---------------------- IDs ----------------------*/

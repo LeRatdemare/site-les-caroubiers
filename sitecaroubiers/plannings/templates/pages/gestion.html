@@ -5,35 +5,46 @@
 {% block body %}
 <h1>Gestion</h1>
 <h2>Familles</h2>
-<table class='families'>
-    <thead>
+<form action='' method='POST'>
+    <input type='hidden' name='is-update' value='True'>
+    {% csrf_token %}
+    <table class='families'>
+        <thead>
+            <tr>
+                <th>Famille</th>
+                <th>Enfant à l'école</th>
+                <th>Enfant au collège</th>
+                <th>SUPPRIMER</th>
+            </tr>
+        </thead>
+        {% for family in families %}
         <tr>
-            <th>Famille</th>
-            <th>Enfant au collège</th>
-            <th>Enfant en primaire</th>
+            <td>{{family.name}}</td>
+            <td class='{% if not family.has_child_in_school %}un{% endif %}check'>
+                <input type='checkbox' name='{{ family.name }}.has_child_in_school'
+                    {% if family.has_child_in_school %}checked{% endif %}>
+            </td>
+            <td class='{% if not family.has_child_in_college %}un{% endif %}check'>
+                <input type='checkbox' name='{{ family.name }}.has_child_in_college'
+                    {% if family.has_child_in_college %}checked{% endif %}>
+            </td>
+            <td>
+                <input type='checkbox' name='{{ family.name }}.delete'>
+            </td>
         </tr>
-    </thead>
-    {% for family in families %}
-    <tr>
-        <td>{{family.name}}</td>
-        {% if family.has_child_in_school %}
-        <td class='check'>x</td>
-        {% else %}
-        <td class='uncheck'></td>
-        {% endif %}
-        {% if family.has_child_in_college %}
-        <td class='check'>x</td>
-        {% else %}
-        <td class='uncheck'></td>
-        {% endif %}
-    </tr>
-    {% endfor %}
-</table>
+        {% endfor %}
+    </table>
+    <input type='submit' value='Valider les modifications' class='centered'>
+</form>
 
     <h2>Ajouter une famille</h2>
     <form action='' method='POST'>
+        <input type='hidden' name='is-create' value='True'>
         {% csrf_token %}
-        {{ form.as_p }}
-        <input type='submit' value='Valider'>
+        {{ create_form.as_p }}
+        <input type='submit' value='Ajouter'>
+        {% if creation_error_message %}
+        <p>{{ creation_error_message }}</p>
+        {% endif %}
     </form>
 {% endblock %}
