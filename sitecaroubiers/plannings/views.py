@@ -7,6 +7,7 @@ from django.forms import Form
 from plannings.forms import FamilyForm
 import operator
 from plannings import functions
+from plannings import variables
 
 # Create your views here.
 def index(request):
@@ -59,6 +60,16 @@ def gestion_familles(request):
 def gestion_plannings(request):
     return render(request, 'pages/gestion_plannings.html')
 
+def inscription_perisco_enfant(request):
+    context = {'cible_inscription': 'Enfant', 'semaineType':variables.semaineType}
+    return render(request, 'pages/inscription_perisco.html', context=context)
+
+def inscription_perisco_equipier(request):
+    families = Family.objects.all()
+    context = {'cible_inscription':'Equipier', 'families':families, 'semaineType':variables.semaineType}
+    return render(request, 'pages/inscription_perisco.html', context=context)
+
+# ----------------------------------------------- JSON Infos -----------------------------------------------
 def get_base_plannings(request):
     plannings = {
         'college' : { # Planning du collège

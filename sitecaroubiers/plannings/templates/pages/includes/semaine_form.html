@@ -1,0 +1,76 @@
+{% comment %} {% load static %} {% endcomment %}
+{{ data }}
+{% comment %} <script src="{% static 'js/semaine_form_generation.js' %}" data-semaine={{ semaine }} data-semaine-label="{{}}"></script> {% endcomment %}
+
+<br><br>
+<table>
+    <thead>
+        <tr>
+            <th>Jour</th>
+            <th>Matin</th>
+            <th>Midi</th>
+            <th>Soir</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for day in data.days %}
+        <tr>
+            <td>{{ day.label }}</td>
+            <td>
+                {% if day.matin %}
+                    Heure d'arrivée premier enfant: {{ day.matin.heure_arrivee_premier_enfant }}
+                {% else %}
+                    Pas de données
+                {% endif %}
+            </td>
+            <td>
+                {% if day.midi %}
+                    Equipiers: {{ day.midi.equipiers }}
+                {% else %}
+                    Pas de données
+                {% endif %}
+            </td>
+            <td>
+                {% if day.soir %}
+                    Heure de départ dernier enfant: {{ day.soir.heure_depart_dernier_enfant }}
+                {% else %}
+                    Pas de données
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% comment %} <table>
+    <thead>
+        <tr>
+            <th></th>
+            <th>Matin</th>
+            <th>Midi</th>
+            <th>Soir</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for jour in semaine %}
+        <tr>
+            {{ jour }}
+            <td>{{ jour.label }}</td>
+            <td>
+                {% if jour.matin is not None %}
+                <input type='checkbox' name='S{{ labelSemaine }}-{{ jour.label }}-matin'>
+                {% endif %}
+            </td>
+            <td>
+                {% if jour.midi is not None %}
+                <input type='checkbox' name='S{{ labelSemaine }}-{{ jour.label }}-midi'>
+                {% endif %}
+            </td>
+            <td>
+                {% if jour.soir is not None %}
+                <input type='checkbox' name='S{{ labelSemaine }}-{{ jour.label }}-soir'>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table> {% endcomment %}

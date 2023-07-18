@@ -7,17 +7,24 @@
     </head>
     <body>
         <nav>
-            <ul>
-                <li><a href="{% url 'index' %}">Accueil</a></li>
-                <li>
+            <div class='navbar-container'>
+                <div class='navbar-item'><a href="{% url 'index' %}">Accueil</a></div>
+                <div class='navbar-item'>
+                    Inscriptions Périscolaire
+                    <div class='navbar-sub-container'>
+                        <div class='navbar-sub-item'><a href="{% url 'inscription-perisco-equipier' %}">Equipiers</a></div>
+                        <div class='navbar-sub-item'><a href="{% url 'inscription-perisco-enfant' %}">Enfants</a></div>
+                    </div>
+                </div>
+                <div class='navbar-item'>
                     Gestion
-                    <ul>
-                        <li><a href="{% url 'gestion-familles' %}">Familles</a></li>
-                        <li><a href="{% url 'gestion-plannings' %}">Plannings</a></li>
-                        <li><a href="{% url 'get-base-plannings' %}">Mon beau JSON des plannings</a></li>
-                    </ul>
-                </li>
-            </ul>
+                    <div class='navbar-sub-container'>
+                        <div class='navbar-sub-item'><a href="{% url 'gestion-familles' %}">Familles</a></div>
+                        <div class='navbar-sub-item'><a href="{% url 'gestion-plannings' %}">Plannings</a></div>
+                        <div class='navbar-sub-item'><a href="{% url 'get-base-plannings' %}">Mon beau JSON des plannings</a></div>
+                    </div>
+                </div>
+            </div>
         </nav>
         <div id='body-block'>
             {% block body %}{% endblock %}

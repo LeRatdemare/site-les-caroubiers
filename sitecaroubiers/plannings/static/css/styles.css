@@ -44,6 +44,15 @@ input[type='checkbox'] {
     border-radius: 0.15em;
 }
 
+div.navbar-container {
+    background-color: rgba(127, 255, 212, 0.361);
+    padding: 20px 0px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
 /* ---------------------- CLASSES ----------------------*/
 
 .centered {
@@ -84,5 +93,6 @@ input[type='checkbox'] {
     text-align: center;
     color: #000000;
 }
+
 
 /* ---------------------- IDs ----------------------*/

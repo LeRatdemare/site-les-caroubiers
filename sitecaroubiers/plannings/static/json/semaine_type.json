@@ -1,0 +1,56 @@
+{
+    "days": [
+        {
+            "label": "lundi",
+            "matin": {
+                "equipiers": [],
+                "heure_arrivee_premier_enfant": "08:00"
+            },
+            "midi": {
+                "equipiers": []
+            },
+            "soir": {
+                "equipiers": [],
+                "heure_depart_dernier_enfant": "18:00"
+            }
+        },
+        {
+            "label": "mardi",
+            "matin": {
+                "equipiers": [],
+                "heure_arrivee_premier_enfant": "08:00"
+            },
+            "midi": {
+                "equipiers": []
+            },
+            "soir": {
+                "equipiers": [],
+                "heure_depart_dernier_enfant": "18:00"
+            }
+        },
+        {
+            "label": "jeudi",
+            "matin": {
+                "equipiers": [],
+                "heure_arrivee_premier_enfant": "08:00"
+            },
+            "midi": {
+                "equipiers": []
+            },
+            "soir": {
+                "equipiers": [],
+                "heure_depart_dernier_enfant": "18:00"
+            }
+        },
+        {
+            "label": "vendredi",
+            "matin": {
+                "equipiers": [],
+                "heure_arrivee_premier_enfant": "08:00"
+            },
+            "midi": {
+                "equipiers": []
+            }
+        }
+    ]
+}

@@ -1,0 +1,38 @@
+{% extends 'pages/base.html' %}
+
+{% block title %}PERISCOLAIRE - Inscription {{ cible_inscription }}{% endblock title %}
+
+{% block body %}
+<h1>PERISCOLAIRE - Inscription {{ cible_inscription }}</h1>
+{% lorem 3 p %}
+
+<h2>Identification de l'{{ cible_inscription }}</h2>
+<form>
+    <label for='label'>{{ cible_inscription }} (Nom & Prénom) : </label>
+    <input type='text' name='label' id='label' placeholder='Jean Dupont'><br>
+    {% if cible_inscription|lower == "enfant" %}
+    <label for='cycle'>Cycle : </label>
+    <select name='label' id='cycle'>
+        <option value='cycle1'>cycle 1</option>
+        <option value='cycle2'>cycle 2</option>
+        <option value='cycle3'>cycle 3</option>
+        <option value='college'>college</option>
+    </select>
+    {% else %} <!--On part du principe qu'il n'y a que 2 cibles potentielles (Enfant et Equipier)-->
+    <label for='famille'>Nom de l'enfant : </label>
+    <select name='famille' id='famille'>
+        {% for family in families %}
+        <option value='{{ family.name }}'>{{ family.name }}</option>
+        {% endfor %}
+    </select>
+    {% endif %}
+
+    <h2>Semaine type</h2>
+    {% include 'pages/includes/semaine_form.html' with data=semaineType labelSemaine='semType' %}
+    <h2>Inscription par jour et par créneau</h2>
+    {% comment %} {% for  in  %}{% endfor %} {% endcomment %}
+    <h2>Commentaires</h2>
+    <h2>Validation</h2>
+</form>
+
+{% endblock body %}
