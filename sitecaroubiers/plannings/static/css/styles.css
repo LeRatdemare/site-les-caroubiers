@@ -53,4 +53,36 @@ input[type='checkbox'] {
     margin-top: 10px;
 }
 
+.period-block {
+    width: 80%;
+    height: 300px;
+    margin: 10px auto;
+    background: radial-gradient(circle, rgba(135, 46, 46, 1) 13%, rgba(0, 0, 0, 1) 99%);
+
+    vertical-align: middle;
+    text-align: center;
+    color: #FFFFFF;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: stretch;
+}
+
+.week-block {
+    display: block;
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: auto;
+    align-self: auto;
+    order: 0;
+    background-color: rgb(107, 189, 88);
+
+    /* vertical-align: middle; */
+    text-align: center;
+    color: #000000;
+}
+
 /* ---------------------- IDs ----------------------*/

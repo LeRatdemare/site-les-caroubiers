@@ -68,21 +68,61 @@ def get_base_plannings(request):
                 'semaines' : [ # Période 1
                     { # Semaine 1
                         'lundi': { # 1er jour
-                            'matin':["Nathan", "Arnaud"],
+                            'matin': {
+                                'equipiers' : ["Nathan", "Arnaud"],
+                                'heure_arrivee_premier_enfant':'08:00'
+                            },
                             'midi':["Véronique"],
-                            'soir':["Céline", "Mic"]
+                            'soir': {
+                                'equipiers': ["Céline", "Mic"],
+                                'heure_depart_dernier_enfant':'18:00'
+                            }
                         },
                         'mardi': { # 2ème jour
-                            'matin':["Véronique"],
+                            'matin': {
+                                'equipiers' : ["Véronique"],
+                                'heure_arrivee_premier_enfant':'08:15'
+                            },
                             'midi':["Céline", "Mic"],
-                            'soir':["Nathan", "Arnaud"]
+                            'soir': {
+                                'equipiers': ["Nathan", "Arnaud"],
+                                'heure_depart_dernier_enfant':'17:45'
+                            }
+                        },
+                        'jeudi': { # 2ème jour
+                            'matin': {
+                                'equipiers' : ["Véronique"],
+                                'heure_arrivee_premier_enfant':'08:15'
+                            },
+                            'midi':["Céline", "Mic"],
+                            'soir': {
+                                'equipiers': ["Nathan", "Arnaud"],
+                                'heure_depart_dernier_enfant':'17:45'
+                            }
+                        },
+                        'vendredi': { # 2ème jour
+                            'matin': {
+                                'equipiers' : ["Véronique"],
+                                'heure_arrivee_premier_enfant':'08:15'
+                            },
+                            'midi':["Céline", "Mic"],
+                            'soir': {
+                                'equipiers': ["Nathan", "Arnaud"],
+                                'heure_depart_dernier_enfant':'17:45'
+                            }
                         },
                     },
                     { # Semaine 2
                         'lundi': { # 1er jour
-                            'matin':["Nathan", "Arnaud"],
+                            'matin': {
+                                'equipiers' : ["Nathan", "Arnaud"],
+                                'heure_arrivee_premier_enfant':'08:00'
+                            },
                             'midi':["Véronique"],
-                            'soir':["Céline", "Mic"]
+                            'soir': {
+                                'equipiers': ["Céline", "Mic"],
+                                'heure_depart_dernier_enfant':'18:00'
+                            }
                         },
                     },
                 ]
@@ -90,7 +130,32 @@ def get_base_plannings(request):
             'P2':{ # Période 2
                 # etc...
             },
+            'P3':{ # Période 3
+                # etc...
+            },
+            'P4':{ # Période 4
+                # etc...
+            },
+            'P5':{ # Période 5
+                # etc...
+            },
         },
-        'ecole' : [1,2,5,3] # Planning école
+        'ecole' : { # Planning école
+            'P1':{ # Période 1
+                # etc...
+            },
+            'P2':{ # Période 2
+                # etc...
+            },
+            'P3':{ # Période 3
+                # etc...
+            },
+            'P4':{ # Période 4
+                # etc...
+            },
+            'P5':{ # Période 5
+                # etc...
+            },
+        }
     }
     return JsonResponse(plannings)

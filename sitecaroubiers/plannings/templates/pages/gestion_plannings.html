@@ -8,9 +8,13 @@
 <h2>Préparation de la période</h2>
 
 <h2>Plannings de la période</h2>
+
 <h3>Plannings école</h3>
+<div id='planning-ecole'></div>
 <h3>Plannings collège</h3>
+<div id='planning-college'></div>
+
 <ul></ul>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-<script src="{% static 'js/test.js' %}" data-plannings-url="{% url 'get-base-plannings' %}" id="plannings-construct"></script>
+<script src="{% static 'js/planning_generation.js' %}" data-plannings-url="{% url 'get-base-plannings' %}" id="plannings-construct"></script>
 {% endblock %}
