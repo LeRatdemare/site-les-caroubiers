@@ -72,7 +72,9 @@ def get_base_plannings(request):
                                 'equipiers' : ["Nathan", "Arnaud"],
                                 'heure_arrivee_premier_enfant':'08:00'
                             },
-                            'midi':["Véronique"],
+                            'midi':{
+                                'equipiers': ["Véronique"]
+                            },
                             'soir': {
                                 'equipiers': ["Céline", "Mic"],
                                 'heure_depart_dernier_enfant':'18:00'
@@ -83,7 +85,9 @@ def get_base_plannings(request):
                                 'equipiers' : ["Véronique"],
                                 'heure_arrivee_premier_enfant':'08:15'
                             },
-                            'midi':["Céline", "Mic"],
+                            'midi':{
+                                'equipiers': ["Céline", "Mic"]
+                            },
                             'soir': {
                                 'equipiers': ["Nathan", "Arnaud"],
                                 'heure_depart_dernier_enfant':'17:45'
@@ -94,7 +98,9 @@ def get_base_plannings(request):
                                 'equipiers' : ["Véronique"],
                                 'heure_arrivee_premier_enfant':'08:15'
                             },
-                            'midi':["Céline", "Mic"],
+                            'midi':{
+                                'equipiers': ["Céline", "Mic"]
+                            },
                             'soir': {
                                 'equipiers': ["Nathan", "Arnaud"],
                                 'heure_depart_dernier_enfant':'17:45'
@@ -105,7 +111,9 @@ def get_base_plannings(request):
                                 'equipiers' : ["Véronique"],
                                 'heure_arrivee_premier_enfant':'08:15'
                             },
-                            'midi':["Céline", "Mic"],
+                            'midi':{
+                                'equipiers': ["Céline", "Mic"]
+                            },
                             'soir': {
                                 'equipiers': ["Nathan", "Arnaud"],
                                 'heure_depart_dernier_enfant':'17:45'
@@ -118,7 +126,9 @@ def get_base_plannings(request):
                                 'equipiers' : ["Nathan", "Arnaud"],
                                 'heure_arrivee_premier_enfant':'08:00'
                             },
-                            'midi':["Véronique"],
+                            'midi':{
+                                'equipiers': ["Céline", "Mic"]
+                            },
                             'soir': {
                                 'equipiers': ["Céline", "Mic"],
                                 'heure_depart_dernier_enfant':'18:00'

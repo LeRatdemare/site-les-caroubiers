@@ -9,8 +9,9 @@ $.ajax({
         planningsJson = response;
         // Utilisez la variable dans votre script JavaScript
         console.log(planningsJson);
+        // Génération des divs de gestion du planning à partir des données JSON
         genererPlanning(planningsJson['college']);
-        genererPlanning(planningsJson['ecole'], false);
+        genererPlanning(planningsJson['ecole'], false); // On précise que ce n'est pas le collège
     },
     error: function (xhr, status, error) {
         console.error(error);
@@ -19,49 +20,66 @@ $.ajax({
 
 // Prend un paramètre l'un des 2 plannings (école ou collège), se réferrer à la vue 'get_base_plannings'
 function genererPlanning(planning, college = true) {
-    // console.log(planning);
+    // On déclare la div du template dans laquelle vont se greffer les périodes
+    let blockId = (college ? 'college' : 'ecole') + '-div'
+    let planningBlock = document.getElementById(blockId);
+
+    // On parcours la liste des périodes (P1, P2, etc...)
     for (periodName in planning) {
-        // console.log(planning[period]);
-        let periodDiv = document.createElement("div");
+        // Déclaration des variables pour la période en cours
+        let periodCurrentId = blockId + '-' + periodName
+        let periodDiv = document.createElement("div"); // Div qui contient la période
+        semaines = planning[periodName]['semaines']; // Liste d'objets JSON [{lundi:..., mardi:...,...},{...},...]
+        // Paramètrage de la div
         periodDiv.innerHTML = periodName;
-        periodDiv.setAttribute("class", "period-block");
-        periodDiv.setAttribute("id", (college ? 'college' : 'ecole') + "-period-block-" + periodName);
-        let planningBlock = document.getElementById('planning-' + (college ? 'college' : 'ecole'));
-        // endPlanning.parentNode.insertBefore(periodDiv, endPlanning);
-        planningBlock.appendChild(periodDiv)
-        semaines = planning[periodName]['semaines'];
-        for (numSemaine in semaines) {
-            // console.log(planning[period]['semaines'][semaine]);
-            semaine = semaines[numSemaine];
+        periodDiv.setAttribute("class", "period-div");
+        periodDiv.setAttribute("id", periodCurrentId);
+        planningBlock.appendChild(periodDiv) // On attache la période dans sa div parent
+        // endPlanning.parentNode.insertBefore(periodDiv, endPlanning); // Pour insérer avant un tag
+        // On parcours la période semaine par semaine
+        for (numSemaine in semaines) { // On parcours la liste des semaines
+            // On déclare les variables pour la semaine en cours
+            weekCurrentId = periodCurrentId + '-W' + numSemaine
+            semaine = semaines[numSemaine]; // Au format {lundi:..., mardi:..., etc...}
             let weekDiv = document.createElement("div");
-            weekDiv.innerHTML = semaine;
-            weekDiv.setAttribute("class", "week-block");
-            weekDiv.setAttribute("id", (college ? 'college' : 'ecole') + "-week-block-" + numSemaine);
+            // Paramètrage de la div
+            weekDiv.innerHTML = numSemaine;
+            weekDiv.setAttribute("class", "week-div");
+            weekDiv.setAttribute("id", weekCurrentId);
             periodDiv.appendChild(weekDiv);
+            // On parcours la semaine jour par jour
             for (jourName in semaine) {
-                // console.log(jour);
-                jour = semaine[jourName];
+                // Variables du jour
+                dayCurrentId = weekCurrentId + '-' + jourName
+                jour = semaine[jourName]; // Au format {matin:..., midi:..., soir:...}
                 let dayDiv = document.createElement("div");
-                dayDiv.innerHTML = jour;
-                dayDiv.setAttribute("class", "day-block");
-                dayDiv.setAttribute("id", (college ? 'college' : 'ecole') + "-day-block-" + jourName);
+                // Paramètrage de la div
+                dayDiv.innerHTML = jourName;
+                dayDiv.setAttribute("class", "day-div");
+                dayDiv.setAttribute("id", dayCurrentId);
                 weekDiv.appendChild(dayDiv);
+                // On parcours le jour créneau par créneau
                 for (slotName in jour) {
-                    // console.log(slot)
-                    slot = jour[slotName];
+                    // Initialisation des variables du jour
+                    slotCurrentId = dayCurrentId + '-' + slotName
+                    slot = jour[slotName]; // Au format {equipiers:...,heure_arrivee_premier_enfant:...} (si matin)
                     let slotDiv = document.createElement("div");
-                    slotDiv.innerHTML = slot;
-                    slotDiv.setAttribute("class", "slot-block");
-                    slotDiv.setAttribute("id", (college ? 'college' : 'ecole') + "-slot-block-" + slotName);
+                    // Paramètrage de la div
+                    slotDiv.innerHTML = slotName;
+                    slotDiv.setAttribute("class", "slot-div");
+                    slotDiv.setAttribute("id", slotCurrentId);
                     dayDiv.appendChild(slotDiv);
+                    // On parcours le créneau équipier par équipier
                     for (numEquipier in slot['equipiers']) {
-                        equipier = slot['equipiers'][numEquipier];
+                        // Initialisation des variables de l'équipier
+                        teamMemberCurrentId = slotCurrentId + '-E' + numEquipier
+                        teamMember = slot['equipiers'][numEquipier];
                         let teamMemberDiv = document.createElement("div");
-                        teamMemberDiv.innerHTML = slot;
-                        teamMemberDiv.setAttribute("class", "team-member-block");
-                        teamMemberDiv.setAttribute("id", (college ? 'college' : 'ecole') + "-team-member-block-" + numEquipier);
+                        // Paramètrage de la div
+                        teamMemberDiv.innerHTML = teamMember;
+                        teamMemberDiv.setAttribute("class", "team-member-div");
+                        teamMemberDiv.setAttribute("id", teamMemberCurrentId);
                         slotDiv.appendChild(teamMemberDiv);
-                        console.log(equipier);
                     }
                 }
             }
