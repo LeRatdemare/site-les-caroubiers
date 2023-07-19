@@ -8,9 +8,16 @@
 
 <h2>Identification de l'{{ cible_inscription }}</h2>
 <form>
-    <label for='label'>{{ cible_inscription }} (Nom & Prénom) : </label>
-    <input type='text' name='label' id='label' placeholder='Jean Dupont'><br>
+    <label for='{{ cible_inscription|lower }}-label'>Prénom : </label>
+    <input type='text' name='{{ cible_inscription|lower }}-label' id='{{ cible_inscription|lower }}-label' placeholder='Jean...'><br><br>
+    <label for='{{ cible_inscription|lower }}-famille'>Nom de l'enfant : </label>
+    <select name='{{ cible_inscription|lower }}-famille' id='{{ cible_inscription|lower }}-famille'>
+        {% for family in families %}
+        <option value='{{ family.name }}'>{{ family.name }}</option>
+        {% endfor %}
+    </select><br><br>
     {% if cible_inscription|lower == "enfant" %}
+    <!--Inputs spécifique à l'enfant-->
     <label for='cycle'>Cycle : </label>
     <select name='label' id='cycle'>
         <option value='cycle1'>cycle 1</option>
@@ -18,20 +25,25 @@
         <option value='cycle3'>cycle 3</option>
         <option value='college'>college</option>
     </select>
-    {% else %} <!--On part du principe qu'il n'y a que 2 cibles potentielles (Enfant et Equipier)-->
-    <label for='famille'>Nom de l'enfant : </label>
-    <select name='famille' id='famille'>
-        {% for family in families %}
-        <option value='{{ family.name }}'>{{ family.name }}</option>
-        {% endfor %}
-    </select>
+    {% else %}
+    <!--Inputs spécifique à l'équipier-->
     {% endif %}
 
+    <hr>
     <h2>Semaine type</h2>
-    {% include 'pages/includes/semaine_form.html' with data=semaineType labelSemaine='semType' %}
+    {% include 'pages/includes/semaine_form.html' with semaine=semaineType isSemaineType=True%}
+    
+    <hr>
     <h2>Inscription par jour et par créneau</h2>
-    {% comment %} {% for  in  %}{% endfor %} {% endcomment %}
+    {% for currentWeek in templatePeriod.semaines %}
+    <h3>Semaine {{ currentWeek.numeroSemaineAnnuel }} : Du {{ currentWeek.datedebut }} au {{ currentWeek.datefin }}</h3>
+    {% include 'pages/includes/semaine_form.html' with semaine=currentWeek labelSemaine='sem'%}
+    {% endfor %}
+    
+    <hr>
     <h2>Commentaires</h2>
+    
+    <hr>
     <h2>Validation</h2>
 </form>
 

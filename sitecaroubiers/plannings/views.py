@@ -60,13 +60,24 @@ def gestion_familles(request):
 def gestion_plannings(request):
     return render(request, 'pages/gestion_plannings.html')
 
-def inscription_perisco_enfant(request):
-    context = {'cible_inscription': 'Enfant', 'semaineType':variables.semaineType}
+def inscription_perisco_enfant(request, periodNum):
+    families = Family.objects.all()
+    context = {
+        'cible_inscription': 'Enfant',
+        'families':families,
+        'semaineType':variables.semaineType,
+        'templatePeriod':variables.templatePlanning['college']['P'+str(periodNum)]
+    }
     return render(request, 'pages/inscription_perisco.html', context=context)
 
-def inscription_perisco_equipier(request):
+def inscription_perisco_equipier(request, periodNum):
     families = Family.objects.all()
-    context = {'cible_inscription':'Equipier', 'families':families, 'semaineType':variables.semaineType}
+    context = {
+        'cible_inscription':'Equipier',
+        'families':families,
+        'semaineType':variables.semaineType,
+        'templatePeriod':variables.templatePlanning['college']['P'+str(periodNum)]
+    }
     return render(request, 'pages/inscription_perisco.html', context=context)
 
 # ----------------------------------------------- JSON Infos -----------------------------------------------

@@ -1,5 +1,8 @@
 {
-    "days": [
+    "numeroSemaineAnnuel": 36,
+    "datedebut": "2023-09-01",
+    "datefin": "2023-09-05",
+    "jours": [
         {
             "label": "lundi",
             "matin": {
