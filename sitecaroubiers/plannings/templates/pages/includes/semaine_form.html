@@ -16,17 +16,20 @@
             <td>{{ jour.label }}</td>
             <td>
                 {% if jour.matin %}
-                <input type='checkbox' name='{% if isSemaineType %}semType{% else %}sem{{ semaine.numeroSemaineAnnuel }}{% endif %}-{{ jour.label }}-matin'>
+                <input type='checkbox' name='{% if isSemaineType %}semType{% else %}sem{{ semaine.numeroSemaineAnnuel }}{% endif %}-{{ jour.label }}-matin'
+                id='{% if isSemaineType %}semType{% else %}sem{{ semaine.numeroSemaineAnnuel }}{% endif %}-{{ jour.label }}-matin'>
                 {% endif %}
             </td>
             <td>
                 {% if jour.midi %}
-                <input type='checkbox' name='{% if isSemaineType %}semType{% else %}sem{{ semaine.numeroSemaineAnnuel }}{% endif %}-{{ jour.label }}-midi'>
+                <input type='checkbox' name='{% if isSemaineType %}semType{% else %}sem{{ semaine.numeroSemaineAnnuel }}{% endif %}-{{ jour.label }}-midi'
+                id='{% if isSemaineType %}semType{% else %}sem{{ semaine.numeroSemaineAnnuel }}{% endif %}-{{ jour.label }}-midi'>
                 {% endif %}
             </td>
             <td>
                 {% if jour.soir %}
-                <input type='checkbox' name='{% if isSemaineType %}semType{% else %}sem{{ semaine.numeroSemaineAnnuel }}{% endif %}-{{ jour.label }}-soir'>
+                <input type='checkbox' name='{% if isSemaineType %}semType{% else %}sem{{ semaine.numeroSemaineAnnuel }}{% endif %}-{{ jour.label }}-soir'
+                id='{% if isSemaineType %}semType{% else %}sem{{ semaine.numeroSemaineAnnuel }}{% endif %}-{{ jour.label }}-soir'>
                 {% endif %}
             </td>
         </tr>

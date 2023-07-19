@@ -7,5 +7,15 @@ _file.close()
 templatePlanning = {'college':{}, 'ecole':{}}
 for i in range(5):
     templatePlanning['college']['P'+str(i+1)] = {'datedebut':'2023-09-01', 'datefin':'2023-10-28', 'semaines':[]}
-    for j in range(12):
-        templatePlanning['college']['P'+str(i+1)]['semaines'].append(semaineType)
+    for j in range(36,45):
+        datedebut = semaineType['datedebut']
+        datefin = semaineType['datefin']
+        jours = semaineType['jours']
+        semaine = {
+            "numeroSemaineAnnuel":j,
+            "datedebut":datedebut,
+            "datefin":datefin,
+            "jours":jours
+        }
+
+        templatePlanning['college']['P'+str(i+1)]['semaines'].append(semaine)

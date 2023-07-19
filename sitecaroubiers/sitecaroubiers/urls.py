@@ -23,8 +23,8 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('gestion/familles/', views.gestion_familles, name='gestion-familles'),
     path('gestion/plannings/', views.gestion_plannings, name='gestion-plannings'),
-    path('gestion/inscription-perisco/enfant/<int:periodNum>/', views.inscription_perisco_enfant, name='inscription-perisco-enfant'),
-    path('gestion/inscription-perisco/equipier/<int:periodNum>/', views.inscription_perisco_equipier, name='inscription-perisco-equipier'),
+    path('gestion/inscription-perisco/<int:periodNum>/enfant/', views.inscription_perisco_enfant, name='inscription-perisco-enfant'),
+    path('gestion/inscription-perisco/<int:periodNum>/equipier/', views.inscription_perisco_equipier, name='inscription-perisco-equipier'),
     # JSON
     path('gestion/plannings/get-base-plannings/', views.get_base_plannings, name='get-base-plannings'),
 ]

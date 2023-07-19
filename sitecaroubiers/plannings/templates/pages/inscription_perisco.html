@@ -1,10 +1,26 @@
 {% extends 'pages/base.html' %}
+{% load static %}
 
 {% block title %}PERISCOLAIRE - Inscription {{ cible_inscription }}{% endblock title %}
 
 {% block body %}
 <h1>PERISCOLAIRE - Inscription {{ cible_inscription }}</h1>
-{% lorem 3 p %}
+<p>Veuillez indiquer les besoins en périscolaire de votre enfant pour la prochaine période.</p>
+<p>La section "<em>semaine type</em>" permet d'inscrire votre enfant en une seule fois à un ou plusieurs créneau(x) sur toute la période.<br>
+    La section "<em>Inscription par jour et par créneau</em>" permet de définir à chaque semaine les besoins correspondants.<br>
+    Vous pouvez utiliser les 2 sections. Voici un exemple:
+</p>
+<ul>
+    <li>L'enfant reste tous les lundis midis : indiquez-le dans la section <em>semaine type</em></li>
+    <li>L'enfant reste le mardi soir une semaine sur deux: indiquez-le dans les semaines correspondantes de la section <em>Inscription par jour et par créneau</em>.</li>
+</ul>
+<p>Rappel des horaires pour les créneaux du matin et du soir :
+</p>
+<ul>
+    <li>Matin : à partir de 08H00</li>
+    <li>Soir : jusqu'à 18H00</li>
+</ul>
+{% comment %} {% lorem 3 p %} {% endcomment %}
 
 <h2>Identification de l'{{ cible_inscription }}</h2>
 <form>
@@ -42,9 +58,13 @@
     
     <hr>
     <h2>Commentaires</h2>
+    <label for="commentaire">Commentaire :</label><br>
+    <textarea name="commentaire" rows="10" cols="50" maxlength='1500' placeholder='Insérer un commentaire...' id="commentaire"></textarea>
     
     <hr>
     <h2>Validation</h2>
+    <input type='submit' value='Valider'>
 </form>
 
+<script src="{% static 'js/semaine_type.js' %}"></script>
 {% endblock body %}
