@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
-from plannings.models import Family
+from plannings.models import Family, Inscription, CreneauInscription
 from django.forms import Form
 from plannings.forms import FamilyForm
 import operator
@@ -60,24 +60,42 @@ def gestion_familles(request):
 def gestion_plannings(request):
     return render(request, 'pages/gestion_plannings.html')
 
-def inscription_perisco_enfant(request, periodNum):
+# cible_inscription peut être soit "équipier" soit "enfant"
+def inscription_perisco(request, periodNum, cible_inscription):
     families = Family.objects.all()
+    templatePeriod = variables.templatePlanning['college']['P'+str(periodNum)]
     context = {
-        'cible_inscription': 'Enfant',
+        'cible_inscription': cible_inscription,
         'families':families,
         'semaineType':variables.semaineType,
-        'templatePeriod':variables.templatePlanning['college']['P'+str(periodNum)]
+        'templatePeriod':templatePeriod
     }
-    return render(request, 'pages/inscription_perisco.html', context=context)
+    if request.method == 'POST':
+        # On récupère les données de l'inscription
+        prenom = request.POST[cible_inscription+'-label']
+        famille = request.POST[cible_inscription+'-famille']
+        cycle = ''
+        if request.POST['cycle']:
+            cycle = request.POST['cycle']
+        commentaire = request.POST['commentaire']
+        # On enregistre l'inscription dans la BDD
+        inscription = Inscription.objects.create(prenom=prenom, famille=famille, commentaire=commentaire)
+        # On récupère également les créneaux
+        for semaine in templatePeriod['semaines']:
+            numSemaine = semaine['numeroSemaineAnnuel']
+            for jour in semaine['jours']:
+                nomJour = jour['label']
+                # On construit le nom de la checkbox SANS le créneau
+                base_checkbox_name = 'sem'+str(numSemaine)+'-'+jour['label']
+                # Si le créneau du matin existe
+                for creneau in ['matin', 'midi', 'soir']:
+                    if request.POST[base_checkbox_name + creneau]:
+                        # On enregistre le créneau dans la bonne table
+                        CreneauInscription.objects.create(cycle_enfant=cycle, periode=periodNum, semaine=numSemaine, jour=nomJour, creneau=creneau, id_inscription=inscription['id'])
+        pass
+    else:
+        pass
 
-def inscription_perisco_equipier(request, periodNum):
-    families = Family.objects.all()
-    context = {
-        'cible_inscription':'Equipier',
-        'families':families,
-        'semaineType':variables.semaineType,
-        'templatePeriod':variables.templatePlanning['college']['P'+str(periodNum)]
-    }
     return render(request, 'pages/inscription_perisco.html', context=context)
 
 # ----------------------------------------------- JSON Infos -----------------------------------------------

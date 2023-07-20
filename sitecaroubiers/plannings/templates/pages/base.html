@@ -12,8 +12,11 @@
                 <div class='navbar-item'>
                     Inscriptions Périscolaire
                     <div class='navbar-sub-container'>
-                        <div class='navbar-sub-item'><a href="{% url 'inscription-perisco-equipier' 1 %}">Equipiers</a></div>
-                        <div class='navbar-sub-item'><a href="{% url 'inscription-perisco-enfant' 1 %}">Enfants</a></div>
+                        <!--On pourrait mettre ce qu'on veut ici mais si on ne met pas "Enfant" le choix du cycle ne s'affichera pas sur la page-->
+                        {% with cible_1='Enfant' cible_2='Equipier' %}
+                        <div class='navbar-sub-item'><a href="{% url 'inscription-perisco' 1 cible_1 %}">{{ cible_1 }}</a></div>
+                        <div class='navbar-sub-item'><a href="{% url 'inscription-perisco' 1 cible_2 %}">{{ cible_2 }}</a></div>
+                        {% endwith %}
                     </div>
                 </div>
                 <div class='navbar-item'>

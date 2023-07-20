@@ -13,15 +13,15 @@ class Family(models.Model):
 
 # --------------------------------- INSCRIPTIONS
 class Jour(models.TextChoices):
-    LUNDI = 'LUN'
-    MARDI = 'MAR'
-    MERCREDI = 'MER'
-    JEUDI = 'JEU'
-    VENDREDI = 'VEN'
+    LUNDI = 'lundi'
+    MARDI = 'mardi'
+    MERCREDI = 'mercredi'
+    JEUDI = 'jeudi'
+    VENDREDI = 'vendredi'
 class Creneau(models.TextChoices):
-    MATIN = 'MATIN'
-    MIDI = 'MIDI'
-    SOIR = 'SOIR'
+    MATIN = 'matin'
+    MIDI = 'midi'
+    SOIR = 'soir'
 
 # Une inscription est enregistrée lorsque le parent valide soit sur la page
 # d'inscription périsco "enfant" soit sur la page "équipier."
@@ -33,27 +33,20 @@ class Inscription(models.Model):
     datetime = models.DateTimeField(auto_now=True)
     commentaire = models.CharField(max_length=1500, blank=True)
 
-class CreneauInscriptionEnfant(models.Model):
+class CreneauInscription(models.Model):
     
     class Cycle(models.TextChoices):
         CYCLE_1 = 'C1'
         CYCLE_2 = 'C2'
         CYCLE_3 = 'C3'
         COLLEGE = 'COL'
-    cycle_enfant = models.CharField(choices=Cycle.choices, max_length=10)
+    cycle_enfant = models.CharField(choices=Cycle.choices, max_length=10, blank=True, null=True)
     periode = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     semaine = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(52)])
     jour = models.CharField(choices=Jour.choices, max_length=15)
     creneau = models.CharField(choices=Creneau.choices, max_length=10)
-    horaire_arrivee = models.TimeField()
-    horaire_depart = models.TimeField()
-    id_inscription = models.ForeignKey(Inscription, on_delete=models.CASCADE)
-
-class CreneauInscriptionEquipier(models.Model):
-    periode = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
-    semaine = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(52)])
-    jour = models.CharField(choices=Jour.choices, max_length=15)
-    creneau = models.CharField(choices=Creneau.choices, max_length=10)
+    horaire_arrivee = models.TimeField(blank=True, null=True)
+    horaire_depart = models.TimeField(blank=True, null=True)
     id_inscription = models.ForeignKey(Inscription, on_delete=models.CASCADE)
 
 # --------------------------------- FIN INSCRIPTIONS
