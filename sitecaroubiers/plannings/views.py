@@ -70,13 +70,17 @@ def inscription_perisco(request, periodNum, cible_inscription):
         'semaineType':variables.semaineType,
         'templatePeriod':templatePeriod
     }
+    cible_inscription = cible_inscription.lower()
     if request.method == 'POST':
         # On récupère les données de l'inscription
         prenom = request.POST[cible_inscription+'-label']
-        famille = request.POST[cible_inscription+'-famille']
+        famille = get_object_or_404(Family, name=request.POST[cible_inscription+'-famille']) 
         cycle = ''
-        if request.POST['cycle']:
+        try:
+            # Crée une erreur si le champ n'existe pas
             cycle = request.POST['cycle']
+        except:
+            pass
         commentaire = request.POST['commentaire']
         # On enregistre l'inscription dans la BDD
         inscription = Inscription.objects.create(prenom=prenom, famille=famille, commentaire=commentaire)
@@ -86,12 +90,18 @@ def inscription_perisco(request, periodNum, cible_inscription):
             for jour in semaine['jours']:
                 nomJour = jour['label']
                 # On construit le nom de la checkbox SANS le créneau
-                base_checkbox_name = 'sem'+str(numSemaine)+'-'+jour['label']
+                base_checkbox_name = 'sem'+str(numSemaine)+'-'+jour['label']+'-'
                 # Si le créneau du matin existe
                 for creneau in ['matin', 'midi', 'soir']:
-                    if request.POST[base_checkbox_name + creneau]:
+                    try:
+                        # La ligne en dessous renverra une erreur si la
+                        #checkbox n'a pas été cochée.
+                        checkbox_value = request.POST[base_checkbox_name + creneau]
                         # On enregistre le créneau dans la bonne table
-                        CreneauInscription.objects.create(cycle_enfant=cycle, periode=periodNum, semaine=numSemaine, jour=nomJour, creneau=creneau, id_inscription=inscription['id'])
+                        CreneauInscription.objects.create(cycle_enfant=cycle, periode=periodNum, semaine=numSemaine, jour=nomJour, creneau=creneau, id_inscription=inscription)
+                    except:
+                        print('noo')
+                        continue
         pass
     else:
         pass

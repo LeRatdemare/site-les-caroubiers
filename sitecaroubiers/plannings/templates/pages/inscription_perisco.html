@@ -24,6 +24,7 @@
 
 <h2>Identification de l'{{ cible_inscription }}</h2>
 <form action='' method='POST'>
+    {% csrf_token %}
     <label for='{{ cible_inscription|lower }}-label'>Prénom : </label>
     <input type='text' name='{{ cible_inscription|lower }}-label' id='{{ cible_inscription|lower }}-label' placeholder='Jean...'><br><br>
     <label for='{{ cible_inscription|lower }}-famille'>Nom de l'enfant : </label>
@@ -35,7 +36,7 @@
     {% if cible_inscription|lower == "enfant" %}
     <!--Inputs spécifique à l'enfant. Les value sont importante !! (cf : models)-->
     <label for='cycle'>Cycle : </label>
-    <select name='label' id='cycle'>
+    <select name='cycle' id='cycle'>
         <option value='C1'>cycle 1</option>
         <option value='C2'>cycle 2</option>
         <option value='C3'>cycle 3</option>
