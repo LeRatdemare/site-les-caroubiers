@@ -7,6 +7,7 @@ class Family(models.Model):
     name = models.CharField(max_length=50, unique=True)
     has_child_in_college = models.BooleanField(default=False)
     has_child_in_school = models.BooleanField(default=False)
+    total_participations = models.IntegerField()
 
     def __str__(self):
         return f"{self.name}"
@@ -30,6 +31,7 @@ class Creneau(models.TextChoices):
 class Inscription(models.Model):
     prenom = models.CharField(max_length=50)
     famille = models.ForeignKey(Family, on_delete=models.SET_NULL, null=True)
+    periode = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     datetime = models.DateTimeField(auto_now=True)
     commentaire = models.CharField(max_length=1500, blank=True)
 
@@ -41,7 +43,6 @@ class CreneauInscription(models.Model):
         CYCLE_3 = 'C3'
         COLLEGE = 'COL'
     cycle_enfant = models.CharField(choices=Cycle.choices, max_length=10, blank=True, null=True)
-    periode = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     semaine = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(52)])
     jour = models.CharField(choices=Jour.choices, max_length=15)
     creneau = models.CharField(choices=Creneau.choices, max_length=10)

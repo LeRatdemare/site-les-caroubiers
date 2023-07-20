@@ -83,7 +83,7 @@ def inscription_perisco(request, periodNum, cible_inscription):
             pass
         commentaire = request.POST['commentaire']
         # On enregistre l'inscription dans la BDD
-        inscription = Inscription.objects.create(prenom=prenom, famille=famille, commentaire=commentaire)
+        inscription = Inscription.objects.create(prenom=prenom, famille=famille, periode=periodNum, commentaire=commentaire)
         # On récupère également les créneaux
         for semaine in templatePeriod['semaines']:
             numSemaine = semaine['numeroSemaineAnnuel']
@@ -98,9 +98,8 @@ def inscription_perisco(request, periodNum, cible_inscription):
                         #checkbox n'a pas été cochée.
                         checkbox_value = request.POST[base_checkbox_name + creneau]
                         # On enregistre le créneau dans la bonne table
-                        CreneauInscription.objects.create(cycle_enfant=cycle, periode=periodNum, semaine=numSemaine, jour=nomJour, creneau=creneau, id_inscription=inscription)
+                        CreneauInscription.objects.create(cycle_enfant=cycle, semaine=numSemaine, jour=nomJour, creneau=creneau, id_inscription=inscription)
                     except:
-                        print('noo')
                         continue
         pass
     else:
