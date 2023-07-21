@@ -29,26 +29,28 @@ class Creneau(models.TextChoices):
 # Les créneaux auxquels correspond l'inscription sont enregistrés dans 2 tables distinctent
 # qui référencent directement l'inscription. Cela permet d'éviter les redondances
 class Inscription(models.Model):
-    prenom = models.CharField(max_length=50)
-    famille = models.ForeignKey(Family, on_delete=models.SET_NULL, null=True)
-    periode = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
-    datetime = models.DateTimeField(auto_now=True)
-    commentaire = models.CharField(max_length=1500, blank=True)
-
-class CreneauInscription(models.Model):
     
-    class Cycle(models.TextChoices):
+    class Categorie(models.TextChoices):
         CYCLE_1 = 'C1'
         CYCLE_2 = 'C2'
         CYCLE_3 = 'C3'
         COLLEGE = 'COL'
-    cycle_enfant = models.CharField(choices=Cycle.choices, max_length=10, blank=True, null=True)
+        EQUIPIER = 'EQ'
+    
+    prenom = models.CharField(max_length=50)
+    famille = models.ForeignKey(Family, on_delete=models.SET_NULL, null=True)
+    periode = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    categorie = models.CharField(choices=Categorie.choices, max_length=10)
+    datetime = models.DateTimeField(auto_now=True)
+    commentaire = models.CharField(max_length=1500, blank=True)
+
+class CreneauInscription(models.Model):
     semaine = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(52)])
     jour = models.CharField(choices=Jour.choices, max_length=15)
     creneau = models.CharField(choices=Creneau.choices, max_length=10)
     horaire_arrivee = models.TimeField(blank=True, null=True)
     horaire_depart = models.TimeField(blank=True, null=True)
-    id_inscription = models.ForeignKey(Inscription, on_delete=models.CASCADE)
+    inscription = models.ForeignKey(Inscription, on_delete=models.CASCADE)
 
 # --------------------------------- FIN INSCRIPTIONS
 

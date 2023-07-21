@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, get_list_or_404
 from plannings.models import Family, Inscription, CreneauInscription
 # from workalendar.europe import France
 
@@ -19,8 +19,99 @@ from plannings.models import Family, Inscription, CreneauInscription
 # france = France()
 # france.add_working_days()
 
-def generate_planning(periode):
-    # On commence par récupérer toutes les inscriptions de la période
+def extraire_donnees_creneaux(numPeriode, college=False):
+    """
+    Met à jour les fichiers planning_equipiers.json et planning_enfant.json
+    en fonction des valeurs des inscriptions enfants et équipiers enregistrées
+    dans la base de donnée.
+    Ne fait aucune modification de la base de donnée.
 
-    # On récupère également le nombre total de participations de chaque famille
-    pass
+    Return : liste au format [{'semaine':..., 'jour':..., 'creneau':..., 'nb_enfants':..., 'familles':[]}, ...]
+    !!! N'effectue pas de vérification sur les inscriptions !!!
+    !!! Travaille uniquement avec les données saisies même si insuffisantes !!!
+    """
+    # On commence par récupérer toutes les inscriptions/créneaux de la période
+    _inscriptions = Inscription.objects.filter(periode=numPeriode)
+    # On récupère soit les enfants à l'école soit les collégiens...
+    # ...et les équipiers possiblement à disposition en fonction
+    inscriptions_enfants = None
+    if college:
+        inscriptions_enfants = _inscriptions.filter(categorie=Inscription.Categorie.COLLEGE)
+        inscriptions_equipiers = _inscriptions.filter(categorie=Inscription.Categorie.EQUIPIER, famille__has_child_in_college=True)
+    else:
+        inscriptions_enfants = _inscriptions.exclude(categorie__in=[Inscription.Categorie.EQUIPIER, Inscription.Categorie.COLLEGE])
+        inscriptions_equipiers = _inscriptions.filter(categorie=Inscription.Categorie.EQUIPIER, inscriptions_equipiers = _inscriptions.filter(categorie=Inscription.Categorie.EQUIPIER, famille__has_child_in_school=True))
+    creneaux_enfants = get_list_or_404(CreneauInscription, inscription__in=inscriptions_enfants)
+    creneaux_equipiers = get_list_or_404(CreneauInscription, inscription__in=inscriptions_equipiers)
+
+    # - On tri les parents par créneau à occuper (là où il y a des enfants)
+    creneaux_dispos = [] # La liste à renvoyer
+    # Pour chaque créneau où il y a un enfant
+    for creneau in creneaux_enfants:
+        # On cherche le créneau concerné dans la liste
+        creneau_trouve = False
+        for c_eff in creneaux_dispos:
+            if c_eff['semaine']==creneau.semaine and c_eff['jour']==creneau.jour and c_eff['creneau']==creneau.creneau:
+                # Si il est effectivement dedans on compte l'enfant
+                c_eff['nb_enfants'] += 1
+                creneau_trouve = True
+        # Si on n'a pas trouvé le créneau, on le crée
+        if not creneau_trouve:
+            c_eff = {}
+            c_eff['semaine'] = creneau.semaine
+            c_eff['jour'] = creneau.jour
+            c_eff['creneau'] = creneau.creneau
+            c_eff['nb_enfants'] = 1
+            c_eff['familles'] = []
+            creneaux_dispos.append(c_eff)
+            # Ensuite, pour chaque créneau dans lequel il y a un équipier
+            for c_eq in creneaux_equipiers:
+                # S'il correspond
+                if c_eq.semaine==creneau.semaine and c_eq.jour==creneau.jour and c_eq.creneau==creneau.creneau:
+                    # On ajoute sa famille dans la liste effective du créneau
+                    c_eff['familles'].append(c_eq.inscription.famille)
+    # Arrivé ici, on a maintenant la liste des créneaux avec le nombre d'enfant
+    # ainsi que les équipiers qui s'y sont inscrit.
+    # Il reste alors à retirer des équipiers jusqu'à atteindre les
+    # proportions enfant/équipier désirées.
+    return creneaux_dispos
+    # Tant qu'on n'a pas pile le bon nombre de familles dans chaque créneau on
+    # recommence à les répartir (fonction récursive)
+
+    # On enregistre le résultat dans les fichiers json
+
+def minimiser_nb_equipiers_par_creneau(creneaux_dispos):
+    """
+    Parameter : liste au format [{'semaine':..., 'jour':..., 'creneau':..., 'nb_enfants':..., 'familles':[]}, ...]
+    Return : Même liste mais avec le minimum de familles impliquées par créneau
+    """
+    # On commence par regarder s'il y a assez de personnel dans chaque créneau
+    if implique_le_minimum_de_familles_possible(creneaux_dispos):
+        return creneaux_dispos
+    
+    # On récupère les données de chaque famille
+    familles = Family.objects.all()
+
+def nb_personnel_en_trop(creneau_dispo, categorie_enfants=Inscription.Categorie.COLLEGE, nb_enfants_par_equipier_college=10, nb_enfants_par_equipier_c1=10, nb_enfants_par_equipier_c2=10, nb_enfants_par_equipier_c3=10):
+    """
+    Parameter : liste au format [{'semaine':..., 'jour':..., 'creneau':..., 'nb_enfants':..., 'familles':[]}, ...]
+    """
+    personnel_en_trop = len(creneau_dispo['familles'])
+    nb_enfants_restants = creneau_dispo['nb_enfants']
+    while nb_enfants_restants > 0:
+        # Pour chaque équipier on retire autant d'enfants qu'il faut
+        personnel_en_trop -= 1
+        if categorie_enfants == Inscription.Categorie.COLLEGE:
+            nb_enfants_restants -= nb_enfants_par_equipier_college
+        if categorie_enfants == Inscription.Categorie.CYCLE_1:
+            nb_enfants_restants -= nb_enfants_par_equipier_c1
+        if categorie_enfants == Inscription.Categorie.CYCLE_2:
+            nb_enfants_restants -= nb_enfants_par_equipier_c2
+        if categorie_enfants == Inscription.Categorie.CYCLE_3:
+            nb_enfants_restants -= nb_enfants_par_equipier_c3
+    return personnel_en_trop
+
+def implique_le_minimum_de_familles_possible(creneaux_dispos, nb_enfants_par_equipier_college=10, nb_enfants_par_equipier_c1=10, nb_enfants_par_equipier_c2=10, nb_enfants_par_equipier_c3=10):
+    """
+    """
+    ...
