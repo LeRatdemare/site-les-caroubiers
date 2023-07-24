@@ -48,7 +48,7 @@ class CreneauInscription(models.Model):
     semaine = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(52)])
     jour = models.CharField(choices=Jour.choices, max_length=15)
     creneau = models.CharField(choices=Creneau.choices, max_length=10)
-    horaire_arrivee = models.TimeField(blank=True, null=True)
+    horaire_arrivee = models.TimeField(blank=True, null=True) # L'horaire correspond soit à l'arrivée soit au départ
     horaire_depart = models.TimeField(blank=True, null=True)
     inscription = models.ForeignKey(Inscription, on_delete=models.CASCADE)
 

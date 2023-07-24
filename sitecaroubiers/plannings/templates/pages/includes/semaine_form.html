@@ -16,8 +16,24 @@
             <td>{{ jour.label }}</td>
             <td>
                 {% if jour.matin %}
+                {% if cible_inscription == "enfant" %}
+                <select name='{% if isSemaineType %}semType{% else %}sem{{ semaine.numeroSemaineAnnuel }}{% endif %}-{{ jour.label }}-matin'
+                id='{% if isSemaineType %}semType{% else %}sem{{ semaine.numeroSemaineAnnuel }}{% endif %}-{{ jour.label }}-matin'>
+                    <option value='absent' selected></option>
+                    <option value='08:00'>08h00</option>
+                    <option value='08:05'>08h05</option>
+                    <option value='08:10'>08h10</option>
+                    <option value='08:15'>08h15</option>
+                    <option value='08:20'>08h20</option>
+                    <option value='08:25'>08h25</option>
+                    <option value='08:30'>08h30</option>
+                    <option value='08:35'>08h35</option>
+                    <option value='08:40'>08h40</option>
+                </select>
+                {% else %}
                 <input type='checkbox' name='{% if isSemaineType %}semType{% else %}sem{{ semaine.numeroSemaineAnnuel }}{% endif %}-{{ jour.label }}-matin'
                 id='{% if isSemaineType %}semType{% else %}sem{{ semaine.numeroSemaineAnnuel }}{% endif %}-{{ jour.label }}-matin'>
+                {% endif %}
                 {% endif %}
             </td>
             <td>
@@ -28,8 +44,21 @@
             </td>
             <td>
                 {% if jour.soir %}
+                {% if cible_inscription == "enfant" %}
+                <select name='{% if isSemaineType %}semType{% else %}sem{{ semaine.numeroSemaineAnnuel }}{% endif %}-{{ jour.label }}-soir'
+                id='{% if isSemaineType %}semType{% else %}sem{{ semaine.numeroSemaineAnnuel }}{% endif %}-{{ jour.label }}-soir'>
+                    <option value='absent' selected></option>
+                    <option value='16:45'>16h45</option>
+                    <option value='17:00'>17h00</option>
+                    <option value='17:15'>17h15</option>
+                    <option value='17:30'>17h30</option>
+                    <option value='17:45'>17h45</option>
+                    <option value='18:00'>18h00</option>
+                </select>
+                {% else %}
                 <input type='checkbox' name='{% if isSemaineType %}semType{% else %}sem{{ semaine.numeroSemaineAnnuel }}{% endif %}-{{ jour.label }}-soir'
                 id='{% if isSemaineType %}semType{% else %}sem{{ semaine.numeroSemaineAnnuel }}{% endif %}-{{ jour.label }}-soir'>
+                {% endif %}
                 {% endif %}
             </td>
         </tr>

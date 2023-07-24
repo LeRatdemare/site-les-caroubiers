@@ -8,9 +8,13 @@ from plannings.forms import FamilyForm
 import operator
 from plannings import functions
 from plannings import variables
+from datetime import datetime
 
 # Create your views here.
 def index(request):
+    creneaux = functions.extraire_donnees_creneaux(1)
+    plannings = functions.generer_tous_les_plannings_possibles(creneaux)
+    print('plannings : ', plannings)
     return render(request, 'pages/index.html')
 
 def gestion_familles(request):
@@ -64,13 +68,8 @@ def gestion_plannings(request):
 def inscription_perisco(request, periodNum, cible_inscription):
     families = Family.objects.all()
     templatePeriod = variables.templatePlanning['college']['P'+str(periodNum)]
-    context = {
-        'cible_inscription': cible_inscription,
-        'families':families,
-        'semaineType':variables.semaineType,
-        'templatePeriod':templatePeriod
-    }
     cible_inscription = cible_inscription.lower()
+
     if request.method == 'POST':
         # On récupère les données de l'inscription
         prenom = request.POST[cible_inscription+'-label']
@@ -89,22 +88,34 @@ def inscription_perisco(request, periodNum, cible_inscription):
             numSemaine = semaine['numeroSemaineAnnuel']
             for jour in semaine['jours']:
                 nomJour = jour['label']
-                # On construit le nom de la checkbox SANS le créneau
-                base_checkbox_name = 'sem'+str(numSemaine)+'-'+jour['label']+'-'
+                # On construit le nom de l'input SANS le créneau
+                base_input_name = 'sem'+str(numSemaine)+'-'+jour['label']+'-'
                 # Si le créneau du matin existe
                 for creneau in ['matin', 'midi', 'soir']:
                     try:
                         # La ligne en dessous renverra une erreur si la
                         #checkbox n'a pas été cochée.
-                        checkbox_value = request.POST[base_checkbox_name + creneau]
+                        input_value = request.POST[base_input_name + creneau]
+                        if (input_value != 'on' and input_value != 'absent'):
+                            time_object = datetime.strptime(input_value, '%H:%M').time()
+                            # Si on est l'après-midi, alors c'est un horaire de départ
+                            if time_object > datetime.strptime('12:00', '%H:%M').time():
+                                CreneauInscription.objects.create(semaine=numSemaine, jour=nomJour, creneau=creneau, inscription=inscription, horaire_depart=time_object)
+                            # Sinon, c'est un horaire d'arrivée
+                            else:
+                                CreneauInscription.objects.create(semaine=numSemaine, jour=nomJour, creneau=creneau, inscription=inscription, horaire_arrivee=time_object)
                         # On enregistre le créneau dans la bonne table
-                        CreneauInscription.objects.create(semaine=numSemaine, jour=nomJour, creneau=creneau, inscription=inscription)
                     except:
                         continue
         pass
     else:
         pass
-
+    context = {
+        'cible_inscription': cible_inscription,
+        'families':families,
+        'semaineType':variables.semaineType,
+        'templatePeriod':templatePeriod
+    }
     return render(request, 'pages/inscription_perisco.html', context=context)
 
 # ----------------------------------------------- JSON Infos -----------------------------------------------
