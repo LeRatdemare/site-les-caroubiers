@@ -2,19 +2,25 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
-from plannings.models import Family, Inscription, CreneauInscription
+from plannings.models import Family, Inscription, CreneauInscription, Periode
 from django.forms import Form
 from plannings.forms import FamilyForm
 import operator
-from plannings import functions
-from plannings import variables
+from plannings.python_scripts import functions
+from plannings.python_scripts import variables
 from datetime import datetime
+import json
+from django.templatetags.static import static
 
 # Create your views here.
 def index(request):
-    creneaux = functions.extraire_donnees_creneaux(1)
-    plannings = functions.generer_tous_les_plannings_possibles(creneaux)
-    print('plannings : ', plannings)
+    # print(variables.templatePlanning)
+    # creneaux = functions.extraire_donnees_creneaux(1, college=False)
+    # print('creneaux_dispos :', creneaux)
+    # plannings = functions.generer_tous_les_plannings_possibles(creneaux)
+    # print('plannings : ', plannings)
+    # print('Taille :', len(plannings[0][1][0]))
+
     return render(request, 'pages/index.html')
 
 def gestion_familles(request):
@@ -81,8 +87,9 @@ def inscription_perisco(request, periodNum, cible_inscription):
         except:
             categorie_de_linscrit = 'EQ'
         commentaire = request.POST['commentaire']
+        periode = Periode.objects.get(annee=datetime.now().year, numero=periodNum)
         # On enregistre l'inscription dans la BDD
-        inscription = Inscription.objects.create(prenom=prenom, famille=famille, periode=periodNum, categorie=categorie_de_linscrit, commentaire=commentaire)
+        inscription = Inscription.objects.create(prenom=prenom, famille=famille, periode=periode, categorie=categorie_de_linscrit, commentaire=commentaire)
         # On récupère également les créneaux
         for semaine in templatePeriod['semaines']:
             numSemaine = semaine['numeroSemaineAnnuel']
@@ -94,9 +101,13 @@ def inscription_perisco(request, periodNum, cible_inscription):
                 for creneau in ['matin', 'midi', 'soir']:
                     try:
                         # La ligne en dessous renverra une erreur si la
-                        #checkbox n'a pas été cochée.
+                        #checkbox n'a pas été cochée et qu'aucun horaire n'est donné.
                         input_value = request.POST[base_input_name + creneau]
-                        if (input_value != 'on' and input_value != 'absent'):
+                        # Si c'est juste une checkbox cochée
+                        if input_value=='on':
+                            CreneauInscription.objects.create(semaine=numSemaine, jour=nomJour, creneau=creneau, inscription=inscription)
+                        # S'il y a un horaire de précisé
+                        elif input_value != 'absent':
                             time_object = datetime.strptime(input_value, '%H:%M').time()
                             # Si on est l'après-midi, alors c'est un horaire de départ
                             if time_object > datetime.strptime('12:00', '%H:%M').time():
@@ -106,8 +117,7 @@ def inscription_perisco(request, periodNum, cible_inscription):
                                 CreneauInscription.objects.create(semaine=numSemaine, jour=nomJour, creneau=creneau, inscription=inscription, horaire_arrivee=time_object)
                         # On enregistre le créneau dans la bonne table
                     except:
-                        continue
-        pass
+                        pass
     else:
         pass
     context = {
@@ -120,112 +130,7 @@ def inscription_perisco(request, periodNum, cible_inscription):
 
 # ----------------------------------------------- JSON Infos -----------------------------------------------
 def get_base_plannings(request):
-    plannings = {
-        'college' : { # Planning du collège
-            'P1': {
-                'datedebut':'2023-09-01',
-                'datefin':'2023-10-28',
-                'semaines' : [ # Période 1
-                    { # Semaine 1
-                        'lundi': { # 1er jour
-                            'matin': {
-                                'equipiers' : ["Nathan", "Arnaud"],
-                                'heure_arrivee_premier_enfant':'08:00'
-                            },
-                            'midi':{
-                                'equipiers': ["Véronique"]
-                            },
-                            'soir': {
-                                'equipiers': ["Céline", "Mic"],
-                                'heure_depart_dernier_enfant':'18:00'
-                            }
-                        },
-                        'mardi': { # 2ème jour
-                            'matin': {
-                                'equipiers' : ["Véronique"],
-                                'heure_arrivee_premier_enfant':'08:15'
-                            },
-                            'midi':{
-                                'equipiers': ["Céline", "Mic"]
-                            },
-                            'soir': {
-                                'equipiers': ["Nathan", "Arnaud"],
-                                'heure_depart_dernier_enfant':'17:45'
-                            }
-                        },
-                        'jeudi': { # 2ème jour
-                            'matin': {
-                                'equipiers' : ["Véronique"],
-                                'heure_arrivee_premier_enfant':'08:15'
-                            },
-                            'midi':{
-                                'equipiers': ["Céline", "Mic"]
-                            },
-                            'soir': {
-                                'equipiers': ["Nathan", "Arnaud"],
-                                'heure_depart_dernier_enfant':'17:45'
-                            }
-                        },
-                        'vendredi': { # 2ème jour
-                            'matin': {
-                                'equipiers' : ["Véronique"],
-                                'heure_arrivee_premier_enfant':'08:15'
-                            },
-                            'midi':{
-                                'equipiers': ["Céline", "Mic"]
-                            },
-                            'soir': {
-                                'equipiers': ["Nathan", "Arnaud"],
-                                'heure_depart_dernier_enfant':'17:45'
-                            }
-                        },
-                    },
-                    { # Semaine 2
-                        'lundi': { # 1er jour
-                            'matin': {
-                                'equipiers' : ["Nathan", "Arnaud"],
-                                'heure_arrivee_premier_enfant':'08:00'
-                            },
-                            'midi':{
-                                'equipiers': ["Céline", "Mic"]
-                            },
-                            'soir': {
-                                'equipiers': ["Céline", "Mic"],
-                                'heure_depart_dernier_enfant':'18:00'
-                            }
-                        },
-                    },
-                ]
-            },
-            'P2':{ # Période 2
-                # etc...
-            },
-            'P3':{ # Période 3
-                # etc...
-            },
-            'P4':{ # Période 4
-                # etc...
-            },
-            'P5':{ # Période 5
-                # etc...
-            },
-        },
-        'ecole' : { # Planning école
-            'P1':{ # Période 1
-                # etc...
-            },
-            'P2':{ # Période 2
-                # etc...
-            },
-            'P3':{ # Période 3
-                # etc...
-            },
-            'P4':{ # Période 4
-                # etc...
-            },
-            'P5':{ # Période 5
-                # etc...
-            },
-        }
-    }
-    return JsonResponse(plannings)
+    _file = open('plannings/static/json/planning_equipiers.json')
+    planning_json = json.loads("".join(_file.readlines()))
+    _file.close()
+    return JsonResponse(planning_json)

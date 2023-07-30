@@ -10,8 +10,8 @@ $.ajax({
         // Utilisez la variable dans votre script JavaScript
         console.log(planningsJson);
         // Génération des divs de gestion du planning à partir des données JSON
-        genererPlanning(planningsJson['college']);
-        genererPlanning(planningsJson['ecole'], false); // On précise que ce n'est pas le collège
+        genererPlanningEquipiers(planningsJson['college']);
+        genererPlanningEquipiers(planningsJson['ecole'], false); // On précise que ce n'est pas le collège
     },
     error: function (xhr, status, error) {
         console.error(error);
@@ -19,9 +19,9 @@ $.ajax({
 });
 
 // Prend un paramètre l'un des 2 plannings (école ou collège), se réferrer à la vue 'get_base_plannings'
-function genererPlanning(planning, college = true) {
+function genererPlanningEquipiers(planning, college = true) {
     // On déclare la div du template dans laquelle vont se greffer les périodes
-    let blockId = (college ? 'college' : 'ecole') + '-div'
+    let blockId = (college ? 'college' : 'ecole') + '-equipiers-div'
     let planningBlock = document.getElementById(blockId);
 
     // On parcours la liste des périodes (P1, P2, etc...)

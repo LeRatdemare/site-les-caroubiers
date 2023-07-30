@@ -36,16 +36,17 @@ def extraire_donnees_creneaux(numPeriode, college=True):
     _inscriptions = Inscription.objects.filter(periode=numPeriode)
     # On récupère soit les enfants à l'école soit les collégiens...
     # ...et les équipiers possiblement à disposition en fonction
+    print('Inscriptions :', _inscriptions)
     inscriptions_enfants = None
+    inscriptions_equipiers = None
     if college:
         inscriptions_enfants = _inscriptions.filter(categorie=Inscription.Categorie.COLLEGE)
         inscriptions_equipiers = _inscriptions.filter(categorie=Inscription.Categorie.EQUIPIER, famille__has_child_in_college=True)
     else:
         inscriptions_enfants = _inscriptions.exclude(categorie__in=[Inscription.Categorie.EQUIPIER, Inscription.Categorie.COLLEGE])
         inscriptions_equipiers = _inscriptions.filter(categorie=Inscription.Categorie.EQUIPIER, famille__has_child_in_school=True)
-    creneaux_enfants = get_list_or_404(CreneauInscription, inscription__in=inscriptions_enfants)
-    creneaux_equipiers = get_list_or_404(CreneauInscription, inscription__in=inscriptions_equipiers)
-
+    creneaux_enfants = CreneauInscription.objects.filter(inscription__in=inscriptions_enfants)
+    creneaux_equipiers = CreneauInscription.objects.filter(inscription__in=inscriptions_equipiers)
     # - On tri les parents par créneau à occuper (là où il y a des enfants)
     creneaux_dispos = [] # La liste à renvoyer
     # Pour chaque créneau où il y a un enfant
@@ -147,20 +148,30 @@ def generer_tous_les_plannings_possibles(creneaux_dispos):
         return creneaux_dispos
     # Sinon, on récupère les informations du 1er créneau
     creneau = creneaux_dispos[0]
+    print('Creneau :', creneau)
     equipiers = creneau['familles']
+    # print('Equipiers :', equipiers)
     surplus_equipiers = nb_equipiers_en_trop(creneau)
+    # print('Surplus :', surplus_equipiers)
     # S'il n'y a qu'un seul créneau, on renvoie juste la liste des combinaisons possibles
     if len(creneaux_dispos) == 1:
-        return partiesliste(creneaux_dispos[0]['familles'], len(equipiers) - surplus_equipiers)
+        parties = partiesliste(creneaux_dispos[0]['familles'], len(equipiers) - surplus_equipiers)
+        return parties
     # Si en revanche il y a plus d'un créneau, on récupère la liste des combinaisons
     combinaisons = partiesliste(creneau['familles'], len(equipiers) - surplus_equipiers)
-    # Pour chaque combinaison d'équipiers possible, on la concatène avec la liste des plannings
+    # print('Combinaisons :', combinaisons)
+    # On récupère le reste des créneaux
+    reste = copy.deepcopy(creneaux_dispos)
+    reste.remove(creneau)
+    # print('Reste :', reste)
+    suite_plannings_possibles = generer_tous_les_plannings_possibles(reste)
+    # S'il n'y a pas de combinaison possible pour le créneau, on renvoie le reste
+    if len(combinaisons) < 1:
+        plannings.append([[], suite_plannings_possibles])
+    # Sinon, pour chaque combinaison d'équipiers possible, on la concatène avec la liste des plannings
     # possibles sur le reste des créneaux.
     for combinaison in combinaisons:
-        reste = copy.deepcopy(combinaisons)
-        print(reste)
-        reste.remove(combinaison)
-        plannings.append([combinaison, generer_tous_les_plannings_possibles(reste)])
+        plannings.append([combinaison, suite_plannings_possibles])
     return plannings
 
 # -------------------------- MATH

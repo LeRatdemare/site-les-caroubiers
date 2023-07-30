@@ -1,13 +1,14 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from plannings.python_scripts.plannings import generate_empty_planning
 
 # Create your models here.
 class Family(models.Model):
 
-    name = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=50, primary_key=True)
     has_child_in_college = models.BooleanField(default=False)
     has_child_in_school = models.BooleanField(default=False)
-    total_participations = models.IntegerField()
+    total_participations = models.IntegerField(default=0)
 
     def __str__(self):
         return f"{self.name}"
@@ -24,6 +25,12 @@ class Creneau(models.TextChoices):
     MIDI = 'midi'
     SOIR = 'soir'
 
+class Periode(models.Model):
+
+    numero = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    annee = models.IntegerField(validators=[MinValueValidator(2023)])
+    planning = models.JSONField(default=generate_empty_planning)
+
 # Une inscription est enregistrée lorsque le parent valide soit sur la page
 # d'inscription périsco "enfant" soit sur la page "équipier."
 # Les créneaux auxquels correspond l'inscription sont enregistrés dans 2 tables distinctent
@@ -39,7 +46,7 @@ class Inscription(models.Model):
     
     prenom = models.CharField(max_length=50)
     famille = models.ForeignKey(Family, on_delete=models.SET_NULL, null=True)
-    periode = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    periode = models.ForeignKey(Periode, on_delete=models.CASCADE)
     categorie = models.CharField(choices=Categorie.choices, max_length=10)
     datetime = models.DateTimeField(auto_now=True)
     commentaire = models.CharField(max_length=1500, blank=True)
@@ -53,29 +60,3 @@ class CreneauInscription(models.Model):
     inscription = models.ForeignKey(Inscription, on_delete=models.CASCADE)
 
 # --------------------------------- FIN INSCRIPTIONS
-
-# class Periode(models.Model):
-
-#     name = models.CharField(max_length=50, unique=True)
-#     number_of_weeks = models.IntegerField(default=9, validators=[MinValueValidator(1), MaxValueValidator(12)])
-
-# class TimeSlot(models.Model):
-    
-#     class Slot(models.TextChoices):
-#         MATIN = 'matin'
-#         MIDI = 'midi'
-#         SOIR = 'soir'
-    
-#     # periode = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)]) # P1 à P5
-#     # week_num = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(52)]) # S1 à S52
-#     # day_num = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)]) # Day1 à Day5
-#     date = models.DateField() # Il faudra calculer la période, la semaine et le jour à partir de ça
-#     slot = models.CharField(choices=Slot.choices, max_length=10)
-#     start_time = models.TimeField()
-#     end_time = models.TimeField()
-#     family = models.ForeignKey(Family, null=True, on_delete=models.SET_NULL) # ex : DEFAYE
-#     team_member = models.CharField(max_length=50) # ex : Arnaud DEFAYE
-
-# class Holydays(models.Model):
-    
-#     date = models.DateField()

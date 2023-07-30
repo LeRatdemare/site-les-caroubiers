@@ -6,13 +6,16 @@
         {
             "label": "lundi",
             "matin": {
+                "nb_enfants": 0,
                 "equipiers": [],
                 "heure_arrivee_premier_enfant": "08:00"
             },
             "midi": {
+                "nb_enfants": 0,
                 "equipiers": []
             },
             "soir": {
+                "nb_enfants": 0,
                 "equipiers": [],
                 "heure_depart_dernier_enfant": "18:00"
             }
@@ -20,13 +23,16 @@
         {
             "label": "mardi",
             "matin": {
+                "nb_enfants": 0,
                 "equipiers": [],
                 "heure_arrivee_premier_enfant": "08:00"
             },
             "midi": {
+                "nb_enfants": 0,
                 "equipiers": []
             },
             "soir": {
+                "nb_enfants": 0,
                 "equipiers": [],
                 "heure_depart_dernier_enfant": "18:00"
             }
@@ -34,13 +40,16 @@
         {
             "label": "jeudi",
             "matin": {
+                "nb_enfants": 0,
                 "equipiers": [],
                 "heure_arrivee_premier_enfant": "08:00"
             },
             "midi": {
+                "nb_enfants": 0,
                 "equipiers": []
             },
             "soir": {
+                "nb_enfants": 0,
                 "equipiers": [],
                 "heure_depart_dernier_enfant": "18:00"
             }
@@ -48,10 +57,12 @@
         {
             "label": "vendredi",
             "matin": {
+                "nb_enfants": 0,
                 "equipiers": [],
                 "heure_arrivee_premier_enfant": "08:00"
             },
             "midi": {
+                "nb_enfants": 0,
                 "equipiers": []
             }
         }

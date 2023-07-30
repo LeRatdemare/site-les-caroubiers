@@ -5,7 +5,7 @@ class FamilyForm(forms.ModelForm):
     
     class Meta:
         model = Family
-        fields = '__all__'
+        fields = ('name', 'has_child_in_school', 'has_child_in_college')
         labels = {
             'name': "Nom de famille",
             'has_child_in_school': "Enfant à l'école",
