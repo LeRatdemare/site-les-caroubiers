@@ -13,7 +13,10 @@
                             "label": "lundi",
                             "matin": {
                                 "nb_enfants": 5,
-                                "equipiers": [],
+                                "equipiers": [
+                                    "DEFAYE",
+                                    "VILLARD"
+                                ],
                                 "heure_arrivee_premier_enfant": "08: 00"
                             },
                             "midi": {

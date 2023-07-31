@@ -53,6 +53,12 @@ div.navbar-container {
     justify-content: space-evenly;
 }
 
+td,
+th {
+    min-width: 50px;
+    margin: 5px;
+}
+
 /* ---------------------- CLASSES ----------------------*/
 
 .centered {
@@ -64,7 +70,8 @@ div.navbar-container {
 
 .period-div {
     width: 80%;
-    height: 300px;
+    min-height: 300px;
+    padding: 20px 5px;
     margin: 10px auto;
     background: radial-gradient(circle, rgba(135, 46, 46, 1) 13%, rgba(0, 0, 0, 1) 99%);
 
@@ -74,15 +81,16 @@ div.navbar-container {
 
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     align-content: stretch;
 }
 
 .week-div {
-    display: block;
+    display: flex;
     flex-grow: 0;
+    flex-direction: column;
     flex-shrink: 1;
     flex-basis: auto;
     align-self: auto;
@@ -90,8 +98,16 @@ div.navbar-container {
     background-color: rgb(107, 189, 88);
 
     /* vertical-align: middle; */
+    margin: 5px 10px;
+    padding: 5px;
     text-align: center;
     color: #000000;
+}
+
+.day-div {
+    display: flex;
+    flex-direction: row;
+
 }
 
 

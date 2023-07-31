@@ -133,4 +133,5 @@ def get_base_plannings(request):
     _file = open('plannings/static/json/planning_equipiers.json')
     planning_json = json.loads("".join(_file.readlines()))
     _file.close()
+    print(planning_json)
     return JsonResponse(planning_json)
