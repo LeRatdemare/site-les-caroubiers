@@ -1,7 +1,7 @@
 {% comment %} {{ semaine }}
 <br><br> {% endcomment %}
 {% if isSemaineType %}{% else %}{% endif %}
-<table>
+<table class='semaines'>
     <thead>
         <tr>
             <th>Jour</th>
@@ -13,7 +13,7 @@
     <tbody>
         {% for jour in semaine.jours %}
         <tr>
-            <td>{{ jour.label }}</td>
+            <td class='jourLabel'>{{ jour.label }}</td>
             <td>
                 {% if jour.matin %}
                 {% if cible_inscription == "enfant" %}

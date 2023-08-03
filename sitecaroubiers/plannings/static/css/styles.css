@@ -3,6 +3,29 @@ body {
     background-color: blanchedalmond;
 }
 
+div.identification,
+div.semaine {
+    margin-left: 30px;
+}
+
+table.identification td.label {
+    text-align: right;
+}
+
+table.identification td.userInput {
+    text-align: left;
+}
+
+table.semaines td,
+table.semaines th {
+    text-align: center;
+}
+
+table.semaines td.jourLabel {
+    text-align: right;
+}
+
+
 table.families {
     width: 30%;
     margin: auto;

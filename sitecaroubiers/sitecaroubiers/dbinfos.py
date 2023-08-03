@@ -1,4 +1,4 @@
-from MySQLdb import _mysql
+# from MySQLdb import _mysql
 
 host = "localhost"
 port = 3306

@@ -24,43 +24,57 @@
 
 <h2>Identification de l'{{ cible_inscription }}</h2>
 <form action='' method='POST'>
+    <div class='identification'>
     {% csrf_token %}
-    <label for='{{ cible_inscription|lower }}-label'>Prénom : </label>
-    <input type='text' name='{{ cible_inscription|lower }}-label' id='{{ cible_inscription|lower }}-label' placeholder='Jean...'><br><br>
-    <label for='{{ cible_inscription|lower }}-famille'>Nom de l'enfant : </label>
-    <select name='{{ cible_inscription|lower }}-famille' id='{{ cible_inscription|lower }}-famille'>
+    <table class="identification">
+    <tr>
+        <td class="label"><label for='{{ cible_inscription|lower }}-label'>Prénom</label></td>
+        <td class="userInput"><input type='text' name='{{ cible_inscription|lower }}-label' id='{{ cible_inscription|lower }}-label' placeholder='Jean...'></td>
+    </tr>
+    <tr>
+        <td class="label"><label for='{{ cible_inscription|lower }}-famille'>Famille</label></td>
+        <td class="userInput"><select name='{{ cible_inscription|lower }}-famille' id='{{ cible_inscription|lower }}-famille'>
         {% for family in families %}
         <option value='{{ family.name }}'>{{ family.name }}</option>
         {% endfor %}
-    </select><br><br>
+        </select></td>
+    </tr>
+    <tr>
     {% if cible_inscription|lower == "enfant" %}
     <!--Inputs spécifique à l'enfant. Les value sont importante !! (cf : models)-->
-    <label for='cycle'>Cycle : </label>
-    <select name='cycle' id='cycle'>
+    <td class="label"><label for='cycle'>Cycle</label></td>
+    <td class="userInput"><select name='cycle' id='cycle'>
         <option value='C1'>cycle 1</option>
         <option value='C2'>cycle 2</option>
         <option value='C3'>cycle 3</option>
         <option value='COL'>college</option>
-    </select>
+    </select></td>
     {% else %}
     <!--Inputs spécifique à l'équipier-->
     {% endif %}
+    </tr>
+    </table>
+    </div>
 
     <hr>
     <h2>Semaine type</h2>
+    <div class='semaine'>
     {% include 'pages/includes/semaine_form.html' with semaine=semaineType isSemaineType=True cible_inscription=cible_inscription %}
-    
+    </div>
+
     <hr>
     <h2>Inscription par jour et par créneau</h2>
+    <div class='semaine'>
     {% for currentWeek in templatePeriod.semaines %}
-    <h3>Semaine {{ currentWeek.numeroSemaineAnnuel }} : Du {{ currentWeek.datedebut }} au {{ currentWeek.datefin }}</h3>
+    <h3>Semaine {{ currentWeek.numeroSemaineAnnuel }} : {{ currentWeek.datedebut }} - {{ currentWeek.datefin }}</h3>
     {% include 'pages/includes/semaine_form.html' with semaine=currentWeek labelSemaine='sem'%}
     {% endfor %}
+    </div>
     
     <hr>
-    <h2>Commentaires</h2>
-    <label for="commentaire">Commentaire :</label><br>
-    <textarea name="commentaire" rows="10" cols="50" maxlength='1500' placeholder='Insérer un commentaire...' id="commentaire"></textarea>
+    <h2>Commentaire</h2>
+    <!-- <label for="commentaire">Commentaire :</label><br> -->
+    <textarea name="commentaire" rows="7" cols="50" maxlength='1500' placeholder='Insérer un commentaire...' id="commentaire"></textarea>
     
     <hr>
     <h2>Validation</h2>
