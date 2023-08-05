@@ -121,6 +121,10 @@ th {
     background-color: rgb(107, 189, 88);
 
     /* vertical-align: middle; */
+    min-width: 300px;
+    min-height: 200px;
+    width: 45%;
+    height: 50%;
     margin: 5px 10px;
     padding: 5px;
     text-align: center;

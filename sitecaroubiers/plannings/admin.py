@@ -8,7 +8,7 @@ class InscriptionAdmin(admin.ModelAdmin):
 class CreneauInscriptionAdmin(admin.ModelAdmin):
     list_display = ('id', 'inscription', 'semaine', 'jour', 'creneau')
 class PeriodeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'annee', 'numero')
+    list_display = ('id', 'annee', 'numero', 'nb_semaines')
 
 # Register your models here.
 admin.site.register(Family, FamilyAdmin)

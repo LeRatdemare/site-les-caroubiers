@@ -23,7 +23,9 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('gestion/familles/', views.gestion_familles, name='gestion-familles'),
     path('gestion/plannings/', views.gestion_plannings, name='gestion-plannings'),
-    path('gestion/inscription-perisco/<int:periodNum>/<str:cible_inscription>/', views.inscription_perisco, name='inscription-perisco'),
+    path('gestion/inscription-perisco/<int:num_periode>/<str:cible_inscription>/', views.inscription_perisco, name='inscription-perisco'),
+    path('gestion/plannings/selection_periode/', views.selection_periode, name='selection-periode'),
+    path('gestion/plannings/gestion_periode/<int:num_periode>/', views.gestion_periode, name='gestion-periode'),
     # JSON
     path('gestion/plannings/get-base-plannings/', views.get_base_plannings, name='get-base-plannings'),
 ]

@@ -71,9 +71,9 @@ def gestion_plannings(request):
     return render(request, 'pages/gestion_plannings.html')
 
 # cible_inscription peut être soit "équipier" soit "enfant"
-def inscription_perisco(request, periodNum, cible_inscription):
+def inscription_perisco(request, num_periode, cible_inscription):
     families = Family.objects.all()
-    templatePeriod = variables.templatePlanning['college']['P'+str(periodNum)]
+    templatePeriod = variables.templatePlanning['college']['P'+str(num_periode)]
     cible_inscription = cible_inscription.lower()
 
     if request.method == 'POST':
@@ -87,7 +87,7 @@ def inscription_perisco(request, periodNum, cible_inscription):
         except:
             categorie_de_linscrit = 'EQ'
         commentaire = request.POST['commentaire']
-        periode = Periode.objects.get(annee=datetime.now().year, numero=periodNum)
+        periode = Periode.objects.get(annee=datetime.now().year, numero=num_periode)
         # On enregistre l'inscription dans la BDD
         inscription = Inscription.objects.create(prenom=prenom, famille=famille, periode=periode, categorie=categorie_de_linscrit, commentaire=commentaire)
         # On récupère également les créneaux
@@ -127,6 +127,14 @@ def inscription_perisco(request, periodNum, cible_inscription):
         'templatePeriod':templatePeriod
     }
     return render(request, 'pages/inscription_perisco.html', context=context)
+
+def selection_periode(request):
+    return render(request, 'pages/selection_periode.html')
+
+def gestion_periode(request, num_periode):
+    annee_rentree = datetime.now().year - (1 if num_periode>2 else 0)
+    context = {'num_periode': num_periode, 'annee_scolaire': str(annee_rentree)+'/'+str(annee_rentree+1)}
+    return render(request, 'pages/gestion_periode.html', context=context)
 
 # ----------------------------------------------- JSON Infos -----------------------------------------------
 def get_base_plannings(request):

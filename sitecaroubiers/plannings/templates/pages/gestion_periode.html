@@ -1,11 +1,21 @@
 {% extends 'pages/base.html' %}
 {% load static %}
-{% block title %}Plannings{% endblock %}
+
+{% block title %}Gestion de la période{% endblock title %}
 
 {% block body %}
-<h1>Gestion - Plannings</h1>
+<h1>Gestion de la période n°{{ num_periode }} de l'année scolaire {{ annee_scolaire }}</h1>
+<p>Page permettant de modifier les propriétés d'une période. Il est possible de :</p>
+<ul>
+    <li>Ajouter/retirer des semaines</li>
+    <li>Ajouter/retirer des jours dans chaque semaine</li>
+    <li>Ajouter/retirer des créneaux dans chaque journée</li>
+    <li>Ajouter/retirer des équipiers sur chaque créneau</li>
+    <li>OPTIONNEL : Envoyer un mail aux parents pour les prévenir qu'il n'y a pas assez d'inscrits sur certains créneaux</li>
+</ul>
 
 <h2>Plannings COLLEGE</h2>
+
 <h3>Planning équipier - collège</h3>
 <div id='college-equipiers-div'></div>
 <h3>Planning enfant - collège</h3>
@@ -17,7 +27,6 @@
 <h3>Planning enfant - école</h3>
 <div id='ecole-equipiers-div'></div>
 
-<ul></ul>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script src="{% static 'js/planning_generation.js' %}" data-plannings-url="{% url 'get-base-plannings' %}" id="plannings-construct"></script>
-{% endblock %}
+{% endblock body %}

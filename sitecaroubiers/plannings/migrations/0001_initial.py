@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('numero', models.IntegerField(validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(5)])),
                 ('etablissement', models.CharField(choices=[('COL', 'College'), ('EC', 'Ecole')], max_length=5)),
-                ('planning', models.JSONField(default=plannings.python_scripts.plannings.generate_empty_planning)),
+                ('planning', models.JSONField(default=plannings.python_scripts.plannings.generate_empty_periode)),
             ],
         ),
         migrations.CreateModel(

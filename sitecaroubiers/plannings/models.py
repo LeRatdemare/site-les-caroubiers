@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-from plannings.python_scripts.plannings import generate_empty_planning
+# from plannings.python_scripts.plannings import generate_empty_periode
 
 # Create your models here.
 class Family(models.Model):
@@ -28,8 +28,9 @@ class Creneau(models.TextChoices):
 class Periode(models.Model):
 
     numero = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
-    annee = models.IntegerField(validators=[MinValueValidator(2023)])
-    planning = models.JSONField(default=generate_empty_planning)
+    annee = models.IntegerField(validators=[MinValueValidator(2023)]) # L'année de la rentrée scolaire
+    planning = models.JSONField(null=True, blank=True)
+    nb_semaines = models.IntegerField(default=10, validators=[MinValueValidator(5), MaxValueValidator(13)])
 
 # Une inscription est enregistrée lorsque le parent valide soit sur la page
 # d'inscription périsco "enfant" soit sur la page "équipier."
@@ -52,7 +53,7 @@ class Inscription(models.Model):
     commentaire = models.CharField(max_length=1500, blank=True)
 
 class CreneauInscription(models.Model):
-    semaine = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(52)])
+    semaine = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(52)]) # On va le numero de la semaine dans le mois
     jour = models.CharField(choices=Jour.choices, max_length=15)
     creneau = models.CharField(choices=Creneau.choices, max_length=10)
     horaire_arrivee = models.TimeField(blank=True, null=True) # L'horaire correspond soit à l'arrivée soit au départ

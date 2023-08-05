@@ -1,0 +1,16 @@
+{% extends 'pages/base.html' %}
+
+{% block title %}Sélection de la période{% endblock title %}
+
+{% block body %}
+<h1>Sélection de la période</h1>
+<p>Page permettant de sélectionner la période que nous voulons vérifier/modifier. Sélectionner la période :</p>
+
+<ul>
+    <li><a href="{% url 'gestion-periode' 1 %}">Période 1</a></li>
+    <li><a href="{% url 'gestion-periode' 2 %}">Période 2</a></li>
+    <li><a href="{% url 'gestion-periode' 3 %}">Période 3</a></li>
+    <li><a href="{% url 'gestion-periode' 4 %}">Période 4</a></li>
+    <li><a href="{% url 'gestion-periode' 5 %}">Période 5</a></li>
+</ul>
+{% endblock body %}
