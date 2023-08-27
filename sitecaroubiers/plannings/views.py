@@ -8,6 +8,7 @@ from plannings.forms import FamilyForm
 import operator
 from plannings.python_scripts import functions
 from plannings.python_scripts import variables
+from plannings.python_scripts import plannings
 from datetime import datetime
 import json
 from django.templatetags.static import static
@@ -141,5 +142,10 @@ def get_base_plannings(request):
     _file = open('plannings/static/json/planning_equipiers.json')
     planning_json = json.loads("".join(_file.readlines()))
     _file.close()
-    print(planning_json)
+    # print(planning_json)
     return JsonResponse(planning_json)
+
+def get_empty_periode(request):
+    periode_json = plannings.generate_empty_periode()
+    print(periode_json)
+    return JsonResponse(periode_json)

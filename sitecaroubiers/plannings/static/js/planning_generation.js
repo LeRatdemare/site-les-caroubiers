@@ -6,12 +6,12 @@ $.ajax({
     method: 'GET',
     dataType: 'json',
     success: function (response) {
-        planningsJson = response;
+        periodeJson = response;
         // Utilisez la variable dans votre script JavaScript
-        console.log(planningsJson);
+        console.log(periodeJson);
         // Génération des divs de gestion du planning à partir des données JSON
-        genererPlanningEquipiers(planningsJson['college']);
-        genererPlanningEquipiers(planningsJson['ecole'], false); // On précise que ce n'est pas le collège
+        genererPlanningEquipiers(periodeJson['college']);
+        genererPlanningEquipiers(periodeJson['ecole'], false); // On précise que ce n'est pas le collège
     },
     error: function (xhr, status, error) {
         console.error(error);

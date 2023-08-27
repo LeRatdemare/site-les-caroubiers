@@ -28,4 +28,5 @@ urlpatterns = [
     path('gestion/plannings/gestion_periode/<int:num_periode>/', views.gestion_periode, name='gestion-periode'),
     # JSON
     path('gestion/plannings/get-base-plannings/', views.get_base_plannings, name='get-base-plannings'),
+    path('gestion/plannings/get-empty-periode/', views.get_empty_periode, name='get-empty-periode'),
 ]

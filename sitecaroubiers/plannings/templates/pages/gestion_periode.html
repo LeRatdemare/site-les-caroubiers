@@ -25,8 +25,11 @@
 <h3>Planning équipier - école</h3>
 <div id='ecole-equipiers-div'></div>
 <h3>Planning enfant - école</h3>
-<div id='ecole-equipiers-div'></div>
+<div id='ecole-enfant-div'></div>
+
+<button type="button">Générer plannings</button>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-<script src="{% static 'js/planning_generation.js' %}" data-plannings-url="{% url 'get-base-plannings' %}" id="plannings-construct"></script>
+<script src="{% static 'js/generer_plannings_periode.js' %}" data-periode-url="{% url 'get-empty-periode' %}" id="plannings-construct"></script>
+{% comment %} <script src="{% static 'js/planning_generation.js' %}" data-plannings-url="{% url 'get-base-plannings' %}" id="plannings-construct"></script> {% endcomment %}
 {% endblock body %}

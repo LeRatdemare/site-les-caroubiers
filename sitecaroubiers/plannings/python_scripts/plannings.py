@@ -46,16 +46,16 @@ def generate_empty_periode(nb_semaines = 10, premiere_semaine=36):
     return periode
 
 # TODO
-def filled_periode_with_inscriptions(num_periode):
-    periode = generate_empty_periode()
-    # On commence par récupérer les inscriptions de la db
-    inscriptions_ecole = extraire_donnees_creneaux(num_periode, college=False)
-    inscriptions_college = extraire_donnees_creneaux(num_periode)
-    for creneau in inscriptions_ecole:
-        # On va récupéree le créneau correspondant de la periode
-        # periode['semaines'][]
-        ...
-    ...
+# def filled_periode_with_inscriptions(num_periode):
+#     periode = generate_empty_periode()
+#     # On commence par récupérer les inscriptions de la db
+#     inscriptions_ecole = extraire_donnees_creneaux(num_periode, college=False)
+#     inscriptions_college = extraire_donnees_creneaux(num_periode)
+#     for creneau in inscriptions_ecole:
+#         # On va récupéree le créneau correspondant de la periode
+#         # periode['semaines'][]
+#         ...
+#     ...
 
-def effective_planning_for_periode(num_periode):
-    ...
+# def effective_planning_for_periode(num_periode):
+#     ...
